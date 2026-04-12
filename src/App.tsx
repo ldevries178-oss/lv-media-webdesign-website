@@ -250,6 +250,9 @@ function Expertise() {
     offset: ["start start", "end end"]
   });
 
+  // Calculate horizontal movement: slide the track from right to left
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
+
   const services = [
     { icon: <PenTool className="w-8 h-8" />, title: "100% Custom Webdesign", desc: "Elk profiel wordt volledig op maat gebouwd. Passend bij jouw unieke identiteit, stijl en brand. Geen templates, enkel premium design.", list: ["Unieke Identiteit", "Snelle Performance", "Premium Uitstraling"] },
     { icon: <TrendingUp className="w-8 h-8" />, title: "Pro SEO & GEO Dominance", desc: "Vergroot je marktwaarde lokaal én internationaal met ijzersterk SEO-fundament. Word bovenaan gevonden door fans en sponsors.", list: ["Lokale Dominantie", "Internationale Zichtbaarheid", "Verhoogde Traffic"] },
@@ -258,48 +261,52 @@ function Expertise() {
   ];
 
   return (
-    <section ref={containerRef} className="relative z-10 h-[400vh] bg-surface" id="diensten">
-      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="w-full flex md:flex-row flex-col justify-between items-center">
-          
-          <div className="w-full md:w-[45%] z-10 mb-8 md:mb-0">
+    <section ref={containerRef} className="relative z-10 h-[250vh] bg-surface" id="diensten">
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+        <div className="px-6 md:px-12 max-w-7xl mx-auto w-full mb-12 flex flex-col items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Premium Add-Ons</span>
-            <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investeringen om direct <br className="hidden md:block"/> grotere sponsordeals te sluiten.</h2>
-          </div>
-          
-          <div className="w-full md:w-[50%] h-[60vh] md:h-[100vh] relative flex items-center justify-center pointer-events-none">
-            {services.map((s, i) => {
-              const start = i * 0.2;
-              const end = start + 0.4;
-              const opacityEnd = start + 0.1;
-              const fadeOutStart = end - 0.1;
-              
-              const y = useTransform(scrollYProgress, [start, end], ["120vh", "-120vh"]);
-              const scale = useTransform(scrollYProgress, [start, opacityEnd, fadeOutStart, end], [0.8, 1, 1, 0.8]);
-              const opacity = useTransform(scrollYProgress, [start, opacityEnd, fadeOutStart, end], [0, 1, 1, 0]);
-
-              return (
-                <motion.div 
-                  key={i}
-                  style={{ y, scale, opacity, zIndex: services.length - i }}
-                  className="absolute w-full max-w-xl bg-surface-container-low border border-outline-variant/20 p-8 md:p-10 rounded-2xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl pointer-events-auto"
-                >
-                  <div>
-                    <div className="text-secondary mb-8">{s.icon}</div>
-                    <h3 className="text-2xl font-headline italic text-white mb-4">{s.title}</h3>
-                    <p className="text-on-surface-variant text-sm leading-relaxed">{s.desc}</p>
-                  </div>
-                  <ul className="mt-8 space-y-2 text-sm text-secondary/70">
-                    {s.list.map((item, j) => (
-                      <li key={j} className="flex items-center gap-4">
-                        <span className="w-2 h-2 bg-secondary rounded-full"></span> {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              );
-            })}
-          </div>
+            <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investeringen voor directe <br className="hidden md:block"/> impact op sponsordeals.</h2>
+          </motion.div>
+        </div>
+        
+        <div className="relative w-full">
+          <motion.div 
+            style={{ x }} 
+            className="flex gap-6 px-6 md:px-12 w-max"
+          >
+            {services.map((s, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="w-[300px] md:w-[450px] bg-surface-container-low border border-outline-variant/20 p-8 md:p-10 rounded-2xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
+                <div className="relative z-10">
+                  <div className="text-secondary mb-8 transition-transform duration-500 group-hover:scale-110 origin-left">{s.icon}</div>
+                  <h3 className="text-2xl font-headline italic text-white mb-4 group-hover:text-secondary transition-colors duration-300">{s.title}</h3>
+                  <p className="text-on-surface-variant text-sm leading-relaxed">{s.desc}</p>
+                </div>
+                <ul className="mt-8 space-y-3 text-sm text-secondary/70 relative z-10">
+                  {s.list.map((item, j) => (
+                    <li key={j} className="flex items-center gap-3">
+                      <Plus className="w-3 h-3 text-secondary" /> {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+            {/* Added extra padding-right via a spacer div for a cleaner end to the horizontal scroll */}
+            <div className="w-[20vw] h-px" />
+          </motion.div>
         </div>
       </div>
     </section>
