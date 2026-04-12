@@ -1,5 +1,5 @@
 import { motion, useInView, useScroll, useTransform } from 'motion/react';
-import { Menu, ArrowLeft, ArrowRight, PenTool, Code, Brain, TrendingUp, Check, Plus, Mail, MapPin, Minus, Twitter, Linkedin, Instagram, Star } from 'lucide-react';
+import { Menu, Globe, ChevronDown, ArrowLeft, ArrowRight, PenTool, Code, Brain, TrendingUp, Check, Plus, Mail, MapPin, Minus, Twitter, Linkedin, Instagram, Star } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
@@ -86,6 +86,7 @@ function Particles() {
 
 function Navbar() {
   const [activeLink, setActiveLink] = useState('services');
+  const [currentLang, setCurrentLang] = useState('NL');
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl shadow-[0_0_20px_rgba(47,248,1,0.05)]">
@@ -93,26 +94,46 @@ function Navbar() {
         <a className="font-headline italic text-2xl font-bold text-white tracking-tighter" href="#">LV MEDIA</a>
         <div className="hidden md:flex items-center gap-10">
           <a 
-            className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'services' ? 'text-secondary' : 'text-white/70'}`} 
-            href="#services"
-            onClick={() => setActiveLink('services')}
-          >Services</a>
+            className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'diensten' ? 'text-secondary' : 'text-white/70'}`} 
+            href="#diensten"
+            onClick={() => setActiveLink('diensten')}
+          >Add-ons</a>
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'work' ? 'text-secondary' : 'text-white/70'}`} 
             href="#work"
             onClick={() => setActiveLink('work')}
-          >Work</a>
-          <a 
-            className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'about' ? 'text-secondary' : 'text-white/70'}`} 
-            href="#about"
-            onClick={() => setActiveLink('about')}
-          >About</a>
+          >Portfolio</a>
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'pricing' ? 'text-secondary' : 'text-white/70'}`} 
             href="#pricing"
             onClick={() => setActiveLink('pricing')}
-          >Pricing</a>
-          <button className="bg-primary text-on-primary-container px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform duration-300">Get a Quote</button>
+          >Investering</a>
+          <a 
+            className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'contact' ? 'text-secondary' : 'text-white/70'}`} 
+            href="#contact"
+            onClick={() => setActiveLink('contact')}
+          >Contact</a>
+          
+          <div className="relative group py-2">
+            <button className="flex items-center gap-1.5 text-white/70 hover:text-secondary font-bold text-sm tracking-widest transition-colors">
+              <Globe className="w-4 h-4" />
+              <span className="uppercase">{currentLang}</span>
+              <ChevronDown className="w-3 h-3 opacity-50 transition-transform group-hover:rotate-180" />
+            </button>
+            <div className="absolute top-10 right-1/2 translate-x-1/2 w-20 bg-surface-container-highest/90 backdrop-blur-xl border border-outline-variant/20 rounded-xl overflow-hidden opacity-0 pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              {['NL', 'EN', 'FR', 'DE'].map(lang => (
+                <button 
+                  key={lang}
+                  onClick={() => setCurrentLang(lang)}
+                  className={`w-full text-center px-4 py-2.5 text-xs font-bold tracking-widest transition-colors ${currentLang === lang ? 'bg-secondary/20 text-secondary' : 'text-white/70 hover:bg-surface-container-lowest hover:text-white'}`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button className="bg-primary text-on-primary-container px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform duration-300">Maximaliseer je Waarde</button>
         </div>
         <button className="md:hidden text-white" aria-label="Toggle mobile menu">
           <Menu />
@@ -163,7 +184,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           className="inline-block px-4 py-1.5 mb-8 rounded-full border border-outline-variant/30 bg-surface-container-low text-xs tracking-widest uppercase font-bold text-secondary"
         >
-          The Digital Curator
+          Exclusief Voor Atleten
         </motion.span>
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
@@ -171,7 +192,7 @@ function Hero() {
           transition={{ delay: 0.1 }}
           className="font-headline italic text-5xl md:text-7xl lg:text-8xl text-on-surface leading-[0.95] tracking-tighter mb-8"
         >
-          We build digital <br/> experiences <span className="text-secondary">that perform.</span>
+          Maximaliseer je marktwaarde <br/> en <span className="text-secondary">trek sponsors aan.</span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
@@ -179,7 +200,7 @@ function Hero() {
           transition={{ delay: 0.2 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg font-light mb-12 leading-relaxed"
         >
-          Elevate your brand with premium web design, cutting-edge development, and results-driven digital strategies.
+          Wij leveren 100% custom webdesign, volledig ontworpen passend bij jouw unieke identiteit. Maak indruk met een premium platform dat jouw professionele waarde direct verhoogt.
         </motion.p>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -187,8 +208,8 @@ function Hero() {
           transition={{ delay: 0.3 }}
           className="flex flex-col md:flex-row gap-6 justify-center items-center"
         >
-          <button className="bg-primary text-on-primary-container px-8 py-4 rounded-full font-bold text-base hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">View Our Work</button>
-          <button className="border border-primary text-primary px-8 py-4 rounded-full font-bold text-base hover:bg-primary/5 transition-colors">Book a Discovery Call</button>
+          <button className="bg-primary text-on-primary-container px-8 py-4 rounded-full font-bold text-base hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">Start Jouw Project</button>
+          <button className="border border-primary text-primary px-8 py-4 rounded-full font-bold text-base hover:bg-primary/5 transition-colors">Bekijk Portfolio</button>
         </motion.div>
       </div>
     </section>
@@ -197,12 +218,12 @@ function Hero() {
 
 function InfiniteMarquee() {
   const items = [
-    "Results-driven strategies",
-    "8 years of industry excellence",
-    "120+ high-impact projects delivered",
-    "98% client success rate",
-    "Award-winning digital design",
-    "Global reach & scale"
+    "100% Custom Webdesign",
+    "Sponsor Integratie Modules",
+    "Interactieve Match Records",
+    "Pro SEO & GEO Dominance",
+    "Top-Snelheid Performance",
+    "Unieke Atleet Identiteit"
   ];
 
   return (
@@ -224,17 +245,17 @@ function InfiniteMarquee() {
 
 function Expertise() {
   const services = [
-    { icon: <PenTool className="w-8 h-8" />, title: "Strategy & Design", desc: "High-conversion UX/UI flows and rapid wireframing for complex web platforms.", list: ["UX Research", "Interface Design", "Interactive Prototypes"] },
-    { icon: <Code className="w-8 h-8" />, title: "Engineering", desc: "Robust builds using React, Next.js, and modern tech stacks for scalability.", list: ["Custom Frameworks", "API Integrations", "Performance Focused"] },
-    { icon: <Brain className="w-8 h-8" />, title: "AI Integration", desc: "Leverage custom LLMs and automated workflows into your existing product ecosystem.", list: ["Custom LLM Models", "AI Agents", "Data Engineering"] },
-    { icon: <TrendingUp className="w-8 h-8" />, title: "Growth & SEO", desc: "Advanced analytics and search engine optimization to dominate your niche.", list: ["SEO Audits", "Conversion Tracking", "Market Analysis"] }
+    { icon: <PenTool className="w-8 h-8" />, title: "100% Custom Webdesign", desc: "Elk profiel wordt volledig op maat gebouwd. Passend bij jouw unieke identiteit, stijl en brand. Geen templates, enkel premium design.", list: ["Unieke Identiteit", "Snelle Performance", "Premium Uitstraling"] },
+    { icon: <TrendingUp className="w-8 h-8" />, title: "Pro SEO & GEO Dominance", desc: "Vergroot je marktwaarde lokaal én internationaal met ijzersterk SEO-fundament. Word bovenaan gevonden door fans en sponsors.", list: ["Lokale Dominantie", "Internationale Zichtbaarheid", "Verhoogde Traffic"] },
+    { icon: <Code className="w-8 h-8" />, title: "Sponsor Integratie Modules", desc: "Maximaliseer je ROI voor partners met prominente dynamische ad-spaces. Trek direct grotere en professionelere sponsordeals aan.", list: ["Dynamische Banners", "Call-To-Actions", "Directe ROI"] },
+    { icon: <Brain className="w-8 h-8" />, title: "Interactieve Match Records", desc: "Laat je overwinningen en statistieken spreken via indrukwekkende, dynamische archieven in plaats van statische lijstjes.", list: ["Visuele Data", "Carrière Tijdlijn", "Live Updates"] }
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-surface relative z-10" id="services">
+    <section className="py-24 md:py-32 bg-surface relative z-10" id="diensten">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto w-full mb-12">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Expertise</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Our specialized <br/> digital toolkit.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Premium Add-Ons</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investeringen om direct <br/> grotere sponsordeals te sluiten.</h2>
       </FadeIn>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 md:px-12 max-w-7xl mx-auto">
@@ -270,15 +291,15 @@ function Work() {
   return (
     <section className="pt-12 pb-24 md:pt-16 md:pb-32 bg-surface-container-lowest relative z-10" id="work">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-16 md:mb-24 text-center">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Our Portfolio</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Selected Works.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Onze Portfolio</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Geselecteerd Werk.</h2>
       </FadeIn>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-6 md:px-12 max-w-7xl mx-auto">
         {projects.map((p, i) => (
           <FadeIn key={i} delay={i * 0.1} className={`relative group overflow-hidden rounded-2xl ${p.aspect} ${p.offset}`}>
             <img src={p.img} alt={p.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" referrerPolicy="no-referrer" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-10 flex flex-col justify-end">
-              <span className="text-secondary text-xs font-bold mb-2">{p.category}</span>
+              <span className="text-secondary text-xs font-bold mb-2 uppercase">{p.category}</span>
               <h3 className="text-3xl font-headline italic text-white">{p.title}</h3>
             </div>
           </FadeIn>
@@ -321,19 +342,19 @@ function Stats() {
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={120} suffix="+" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Projects Completed</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Projecten Voltooid</p>
         </FadeIn>
         <FadeIn delay={0.2} className="flex flex-col items-center justify-center p-12 rounded-3xl bg-secondary-container/10 border border-secondary/20">
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={98} suffix="%" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Satisfaction Rate</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Tevredenheid</p>
         </FadeIn>
         <FadeIn delay={0.3} className="flex flex-col items-center justify-center p-12 rounded-3xl bg-surface-container-low border border-outline-variant/10">
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={8} suffix="+" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Years Experience</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Jaren Ervaring</p>
         </FadeIn>
       </div>
     </section>
@@ -350,8 +371,8 @@ function Team() {
   return (
     <section className="py-40 relative z-10">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-24">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">The Brains</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Led by experts.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Gedreven door Expertise</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Geleid door professionals.</h2>
       </FadeIn>
       <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16">
         {members.map((m, i) => (
@@ -370,23 +391,23 @@ function Team() {
 
 function Testimonials() {
   const row1 = [
-    { text: "Professional, highly skilled, and easy to communicate with. The team understood our vision perfectly.", name: "Rachel Adams", role: "FOUNDER, NOVA THREADS", initial: "R" },
-    { text: "Exceptional code quality and design. They delivered ahead of schedule and exceeded our expectations.", name: "Mark Johnson", role: "CTO, SYNC WORKSPACE", initial: "M" },
-    { text: "LVmedia completely transformed our online presence. Our conversion rates have doubled since launching the new site.", name: "David Thompson", role: "CEO, AURA BANKING", initial: "D" }
+    { text: "Mijn online merk was gedateerd. LVmedia voegde direct waarde toe. Sponsor aanvragen zijn sinds de lancering verdubbeld.", name: "Alex V.", role: "BJJ ZWARTE BAND", initial: "A" },
+    { text: "Ongekende kwaliteit en design. Ze begrepen exact hoe mijn unieke vechtersprofiel vertaald moest worden naar het web.", name: "Marcos S.", role: "PROFESSIONAL FIGHTER", initial: "M" },
+    { text: "Het platform is snel, professioneel en trekt de juiste aandacht. Mijn marktwaarde is aanzienlijk toegenomen.", name: "Damian de J.", role: "GRAPPLING KAMPIOEN", initial: "D" }
   ];
   
   const row2 = [
-    { text: "Their attention to detail is unmatched. Every aspect of the project was handled with extreme care.", name: "Sarah Jenkins", role: "CMO, NEXUS TECH", initial: "S" },
-    { text: "The team at LVmedia is incredibly talented. They brought our complex ideas to life effortlessly.", name: "James Wilson", role: "DIRECTOR, ELEVATE", initial: "J" },
-    { text: "Working with LVmedia was a game-changer for our business. The new platform is fast and beautiful.", name: "Emily Chen", role: "FOUNDER, LUMINA", initial: "E" }
+    { text: "De sponsor integratie modules hebben mijn inkomsten direct vergroot. Dit is geen website, het is een investering.", name: "Sarah K.", role: "MMA FIGHTER", initial: "S" },
+    { text: "Wat een game-changer. Eindelijk een website die de professionaliteit weerspiegelt die ik op de mat laat zien.", name: "Jordy H.", role: "KICKBOKSER", initial: "J" },
+    { text: "Absolute top-tier strategie en uitvoering. Ze luisteren naar wie je bent als atleet en ontwerpen dit tot in perfectie.", name: "Esther R.", role: "BJJ COMPETITOR", initial: "E" }
   ];
 
   return (
     <section className="py-32 bg-surface-container-low/30 overflow-hidden border-y border-outline-variant/10 relative z-10">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-16">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Testimonials</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-4">Client Feedback</h2>
-        <p className="text-on-surface-variant text-lg">Don't just take our word for it. Here's what our partners have to say.</p>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Wat Atleten Zeggen</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-4">Ervaringen</h2>
+        <p className="text-on-surface-variant text-lg">Lees hoe we de professionele carrières van atleten naar een hoger niveau tillen.</p>
       </FadeIn>
       <div className="flex animate-marquee gap-6 mb-6 min-w-max px-6 md:px-12 will-change-transform">
         {[...row1, ...row1, ...row1].map((t, i) => (
@@ -438,52 +459,54 @@ function Pricing() {
   return (
     <section className="py-40 relative z-10" id="pricing">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-24 text-center">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Investment</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Scaleable Pricing.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Transparant Model</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investering in je Carrière.</h2>
       </FadeIn>
       <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         <FadeIn delay={0.1} className="bg-surface-container-lowest p-10 rounded-3xl border border-outline-variant/10 flex flex-col justify-between">
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-4">Essential</h3>
-            <div className="text-4xl font-headline italic text-white mb-8">$2,500 <span className="text-sm font-body not-italic text-on-surface-variant">/ project</span></div>
+            <h3 className="text-xl font-headline italic text-white mb-2">Foundation</h3>
+            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">De perfecte basis voor professionele atleten.</p>
+            <div className="text-4xl font-headline italic text-white mb-8">€500 <span className="text-sm font-body not-italic text-on-surface-variant">+ €50 /mnd</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> 5 Custom Pages</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Responsive Design</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Basic SEO</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> 1 Month Support</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Premium Custom Design</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Top-snelheid Performance</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Standaard SEO</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Veilig Onderhoud & Hosting</li>
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Select Plan</button>
+          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Start Foundation</button>
         </FadeIn>
         
         <FadeIn delay={0.2} className="bg-surface-container-highest p-10 rounded-3xl border border-secondary/30 relative flex flex-col justify-between shadow-[0_0_50px_rgba(47,248,1,0.1)] scale-105 z-10">
-          <div className="absolute top-0 right-10 -translate-y-1/2 bg-secondary text-surface px-4 py-1 text-[10px] font-black uppercase tracking-tighter rounded-full">Recommended</div>
+          <div className="absolute top-0 right-10 -translate-y-1/2 bg-secondary text-surface px-4 py-1 text-[10px] font-black uppercase tracking-tighter rounded-full">Meest Gekozen</div>
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-4">Professional</h3>
-            <div className="text-4xl font-headline italic text-white mb-8">$5,000 <span className="text-sm font-body not-italic text-on-surface-variant">/ project</span></div>
+            <h3 className="text-xl font-headline italic text-white mb-2">Pro Athlete</h3>
+            <p className="text-secondary/80 text-xs mb-4 font-bold tracking-widest uppercase min-h-[32px]">Inclusief Upsells</p>
+            <div className="text-3xl font-headline italic text-white mb-8">Maatwerk <span className="text-sm font-body not-italic text-on-surface-variant">/ op aanvraag</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> 15 Custom Pages</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Custom Integrations</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Advanced Animations</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Advanced SEO</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> 3 Months Support</li>
+              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Foundation Inbegrepen</li>
+              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Pro SEO & GEO Dominance</li>
+              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Sponsor Integratie Modules</li>
+              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Priority Support & Updates</li>
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full bg-primary text-on-primary-container text-sm font-bold hover:scale-105 transition-transform">Get Started</button>
+          <button className="w-full py-4 rounded-full bg-primary text-on-primary-container text-sm font-bold hover:scale-105 transition-transform">Maximaliseer Zichtbaarheid</button>
         </FadeIn>
 
         <FadeIn delay={0.3} className="bg-surface-container-lowest p-10 rounded-3xl border border-outline-variant/10 flex flex-col justify-between">
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-4">Custom</h3>
-            <div className="text-4xl font-headline italic text-white mb-8">Quote</div>
+            <h3 className="text-xl font-headline italic text-white mb-2">Champion</h3>
+            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">Voor de absolute top in de sport.</p>
+            <div className="text-3xl font-headline italic text-white mb-8">Maatwerk <span className="text-sm font-body not-italic text-on-surface-variant">/ op aanvraag</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Unlimited Pages</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Complex Apps / Dashboards</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> E-commerce Engine</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Alles in Pro Athlete</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Interactieve Match Records</li>
+              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Volledig Maatwerk Platform</li>
               <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Dedicated Account Manager</li>
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Contact Sales</button>
+          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Word een Champion</button>
         </FadeIn>
       </div>
     </section>
@@ -492,18 +515,18 @@ function Pricing() {
 
 function FAQ() {
   const faqs = [
-    { q: "Do you provide SEO?", a: "Yes, all our builds include technical SEO as standard. For higher-tier plans, we provide comprehensive keyword strategy and optimization." },
-    { q: "How long does a project take?", a: "Typically, a standard project takes 4–6 weeks. Complex applications or e-commerce platforms can range from 8–12 weeks." },
-    { q: "What CMS do you use?", a: "We specialize in headless architectures using Contentful, Sanity, or Strapi. We also build custom management interfaces if required." },
-    { q: "Do you offer maintenance?", a: "Absolutely. We provide monthly retainer packages for security updates, performance monitoring, and content management." }
+    { q: "Waarom een maandelijks bedrag voor de Foundation?", a: "Dit is voor veilige hosting op premium servers, dagelijkse backups, technische updates en doorlopende support zodat jouw website altijd bereikbaar, veilig en enorm snel is." },
+    { q: "Is het 80s Synthwave thema jullie enige stijl?", a: "Absoluut niet. De 80s Synthwave aesthetic is slechts het thema van ons huidige event. Wij ontwerpen 100% custom, volledig afgestemd op de unieke identiteit van de atleet. Of je nu minimalistisch, modern, robuust of extreem creatief zoekt: we build it." },
+    { q: "Hoe snel is mijn profiel online?", a: "Het Foundation concept duurt gemiddeld 2 tot 4 weken. Profielen met complexe add-ons (zoals dynamische match records of sponsor modules) nemen 4 tot 6 weken in beslag." },
+    { q: "Helpen de integraties echt bij het aantrekken van sponsors?", a: "Ja. Grote merken en (potentiële) sponsors zoeken naar atleten met een exceptionele, professionele online aanwezigheid en meetbare ROI. Met onze premium integraties positioneer je jezelf als een buitengewoon veilige en lucratieve investering." }
   ];
 
   return (
     <section className="py-40 bg-surface-container-lowest relative z-10">
       <div className="px-6 md:px-12 max-w-3xl mx-auto">
         <FadeIn className="mb-24 text-center">
-          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Knowledge Base</span>
-          <h2 className="font-headline italic text-4xl md:text-6xl text-white">Frequently Asked Questions.</h2>
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Kennisbank</span>
+          <h2 className="font-headline italic text-4xl md:text-6xl text-white">Veelgestelde Vragen.</h2>
         </FadeIn>
         <div className="space-y-8">
           {faqs.map((faq, i) => (
@@ -547,16 +570,12 @@ function Contact() {
       <div className="relative z-10 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24">
         <FadeIn>
           <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Connect</span>
-          <h2 className="font-headline italic text-4xl md:text-7xl text-white mb-8">Let's build <br/> something <br/> amazing together.</h2>
-          <p className="text-on-surface-variant text-lg max-w-md leading-relaxed mb-12">Have a project in mind? Fill out the form and our design lead will reach out within 24 hours.</p>
+          <h2 className="font-headline italic text-4xl md:text-7xl text-white mb-8">Klaar om je <br/> marktwaarde <br/> te maximaliseren?</h2>
+          <p className="text-on-surface-variant text-lg max-w-md leading-relaxed mb-12">Neem contact op en ontdek direct wat een premium digitaal profiel voor jouw (verdere) professionele carrièrekansen en sponsordeals kan betekenen.</p>
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-white">
               <Mail className="text-secondary w-5 h-5" />
               <span>hello@lvmedia.studio</span>
-            </div>
-            <div className="flex items-center gap-4 text-white">
-              <MapPin className="text-secondary w-5 h-5" />
-              <span>Los Angeles, CA</span>
             </div>
           </div>
         </FadeIn>
@@ -564,23 +583,23 @@ function Contact() {
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Name</label>
-                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="First Name" type="text" />
+                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Voornaam</label>
+                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Voornaam" type="text" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Last Name</label>
-                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Last Name" type="text" />
+                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Achternaam</label>
+                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Achternaam" type="text" />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Email</label>
-              <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="your@email.com" type="email" />
+              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">E-mailadres</label>
+              <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="jouw@email.nl" type="email" />
             </div>
             <div className="space-y-2">
-              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Project Details</label>
-              <textarea className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Tell us about your project..." rows={4}></textarea>
+              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Jouw Doelen / Carrière Informatie</label>
+              <textarea className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Vertel ons over jezelf en wat je wilt bereiken..." rows={4}></textarea>
             </div>
-            <button className="w-full py-4 rounded-full bg-primary text-on-primary-container font-black text-base hover:scale-[1.02] transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.05)]" type="submit">Send Inquiry</button>
+            <button className="w-full py-4 rounded-full bg-primary text-on-primary-container font-black text-base hover:scale-[1.02] transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.05)]" type="submit">Verstuur Aanvraag</button>
           </form>
         </FadeIn>
       </div>
@@ -603,7 +622,7 @@ function Footer() {
             <span className="font-headline italic text-2xl font-bold text-white tracking-tighter">LV<span className="text-on-surface-variant font-body not-italic font-normal text-xl tracking-normal">media</span></span>
           </div>
           <p className="text-on-surface-variant text-sm leading-relaxed max-w-xs">
-            Crafting digital experiences that elevate brands and drive results.
+            Wij creëren premium digitale visitekaartjes voor topsporters. Maximaliseer je marktwaarde en trek moeiteloos grote sponsoren aan.
           </p>
           <div className="flex gap-4 mt-2">
             <a href="#" aria-label="Twitter Profile" className="w-10 h-10 rounded-full border border-outline-variant/50 flex items-center justify-center text-white/70 hover:text-secondary hover:border-secondary transition-colors">
@@ -620,22 +639,22 @@ function Footer() {
 
         {/* Services Column */}
         <div className="flex flex-col gap-6">
-          <h3 className="text-white font-bold text-base">Services</h3>
+          <h3 className="text-white font-bold text-base">Expertise</h3>
           <div className="flex flex-col gap-4 text-sm text-on-surface-variant">
-            <a href="#" className="hover:text-secondary transition-colors">Web Design</a>
-            <a href="#" className="hover:text-secondary transition-colors">Development</a>
-            <a href="#" className="hover:text-secondary transition-colors">UI/UX Design</a>
-            <a href="#" className="hover:text-secondary transition-colors">SEO Optimization</a>
+            <a href="#" className="hover:text-secondary transition-colors">Custom Webdesign</a>
+            <a href="#" className="hover:text-secondary transition-colors">Sponsor Integraties</a>
+            <a href="#" className="hover:text-secondary transition-colors">SEO & Dominantie</a>
+            <a href="#" className="hover:text-secondary transition-colors">Interactieve Records</a>
           </div>
         </div>
 
         {/* Company Column */}
         <div className="flex flex-col gap-6">
-          <h3 className="text-white font-bold text-base">Company</h3>
+          <h3 className="text-white font-bold text-base">Bedrijf</h3>
           <div className="flex flex-col gap-4 text-sm text-on-surface-variant">
-            <a href="#" className="hover:text-secondary transition-colors">About Us</a>
-            <a href="#" className="hover:text-secondary transition-colors">Our Work</a>
-            <a href="#" className="hover:text-secondary transition-colors">Careers</a>
+            <a href="#" className="hover:text-secondary transition-colors">Over Ons</a>
+            <a href="#" className="hover:text-secondary transition-colors">Portfolio</a>
+            <a href="#" className="hover:text-secondary transition-colors">Investering</a>
             <a href="#" className="hover:text-secondary transition-colors">Contact</a>
           </div>
         </div>
