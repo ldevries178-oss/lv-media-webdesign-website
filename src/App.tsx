@@ -244,14 +244,25 @@ function InfiniteMarquee() {
 }
 
 function Expertise() {
-  const containerRef = useRef<HTMLElement>(null);
+  const CARD_W = 400;
+  const CARD_H = 400;
+  const CARD_GAP = 28;
+  const CARDS = 4;
+  const TRACK_W = CARDS * CARD_W + (CARDS - 1) * CARD_GAP;
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Use Framer Motion's scroll-tracking correctly
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
+    target: wrapperRef,
+    offset: ["start start", "end end"],
   });
 
-  // Calculate horizontal movement: slide the track from right to left
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
+  // Compute x: at progress=0 all cards are off-screen RIGHT; at progress=1 last card is in view
+  const x = useTransform(scrollYProgress, [0, 1], [
+    typeof window !== "undefined" ? window.innerWidth : 1440,
+    -(TRACK_W - (typeof window !== "undefined" ? window.innerWidth : 1440) + 80)
+  ]);
 
   const services = [
     { icon: <PenTool className="w-8 h-8" />, title: "100% Custom Webdesign", desc: "Elk profiel wordt volledig op maat gebouwd. Passend bij jouw unieke identiteit, stijl en brand. Geen templates, enkel premium design.", list: ["Unieke Identiteit", "Snelle Performance", "Premium Uitstraling"] },
@@ -261,59 +272,90 @@ function Expertise() {
   ];
 
   return (
-    <section ref={containerRef} className="relative z-10 h-[250vh] bg-surface" id="diensten">
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto w-full mb-12 flex flex-col items-start">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Premium Add-Ons</span>
-            <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investeringen voor directe <br className="hidden md:block"/> impact op sponsordeals.</h2>
-          </motion.div>
+    /* 
+      The wrapper must NOT have overflow:hidden — that would break position:sticky on the inner container.
+      It must be position:relative so that sticky children are pinned relative to this.
+    */
+    <div
+      ref={wrapperRef}
+      id="diensten"
+      style={{ position: "relative", height: "300vh", background: "var(--color-surface, #0e0e0e)" }}
+      className="z-10"
+    >
+      {/* STICKY CONTAINER — stays in the viewport while user scrolls the 300vh wrapper */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        {/* Section header */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "96px 48px 0", zIndex: 10 }}>
+          <span style={{ color: "var(--color-secondary, #2ff801)", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", display: "block", marginBottom: "12px" }}>
+            Premium Add-Ons
+          </span>
+          <h2 style={{ fontFamily: "var(--font-headline, serif)", fontStyle: "italic", fontSize: "clamp(2rem, 4vw, 3rem)", color: "white", lineHeight: 1.1, fontWeight: 700, margin: 0 }}>
+            Investeringen voor directe impact<br/>op sponsordeals.
+          </h2>
         </div>
-        
-        <div className="relative w-full">
-          <motion.div 
-            style={{ x }} 
-            className="flex gap-6 px-6 md:px-12 w-max"
-          >
-            {services.map((s, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="w-[300px] md:w-[450px] bg-surface-container-low border border-outline-variant/20 p-8 md:p-10 rounded-2xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
-                <div className="relative z-10">
-                  <div className="text-secondary mb-8 transition-transform duration-500 group-hover:scale-110 origin-left">{s.icon}</div>
-                  <h3 className="text-2xl font-headline italic text-white mb-4 group-hover:text-secondary transition-colors duration-300">{s.title}</h3>
-                  <p className="text-on-surface-variant text-sm leading-relaxed">{s.desc}</p>
+
+        {/* HORIZONTAL TRACK — animated by vertical scroll-progress */}
+        <motion.div
+          style={{
+            x,
+            display: "flex",
+            gap: `${CARD_GAP}px`,
+            paddingLeft: "48px",
+            willChange: "transform",
+            marginTop: "64px", // push cards below the heading
+          }}
+        >
+          {services.map((s, i) => (
+            <div
+              key={i}
+              style={{ width: `${CARD_W}px`, height: `${CARD_H}px`, flexShrink: 0 }}
+              className="bg-surface-container-low border border-outline-variant/20 p-8 rounded-2xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-secondary/10 transition-colors duration-500" />
+              <div className="relative z-10">
+                <div className="text-secondary mb-5 transition-transform duration-500 group-hover:scale-110 origin-left">
+                  {s.icon}
                 </div>
-                <ul className="mt-8 space-y-3 text-sm text-secondary/70 relative z-10">
-                  {s.list.map((item, j) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <Plus className="w-3 h-3 text-secondary" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-            {/* Added extra padding-right via a spacer div for a cleaner end to the horizontal scroll */}
-            <div className="w-[20vw] h-px" />
-          </motion.div>
+                <h3 className="text-xl font-headline italic text-white mb-3 group-hover:text-secondary transition-colors duration-300">
+                  {s.title}
+                </h3>
+                <p className="text-on-surface-variant text-sm leading-relaxed">{s.desc}</p>
+              </div>
+              <ul className="space-y-2.5 text-sm text-secondary/70 relative z-10">
+                {s.list.map((item, j) => (
+                  <li key={j} className="flex items-center gap-3">
+                    <Plus className="w-3 h-3 text-secondary flex-shrink-0" /> {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Scroll hint */}
+        <div style={{ position: "absolute", bottom: "24px", left: "50%", transform: "translateX(-50%)" }} className="flex items-center gap-2 text-white/25 text-xs font-bold tracking-widest uppercase select-none pointer-events-none">
+          <ArrowLeft className="w-3 h-3" />
+          <span>Scroll om te ontdekken</span>
+          <ArrowRight className="w-3 h-3" />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
+
 function Work() {
+
   const projects = [
     { title: "Nebula Finance", category: "FINTECH", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCi-gXf4SanHlS_vpi-WJmDP-GbY9uTND2iCmK_Gqp8IOPgbxRuv9nPyDfcBjUgLQ_dY0Z4Eh1CmwyxOO_p5BC4NNAWR4ZNxwHwmpfS5-4jssGRJgqiiB04KhLWFxV381thUx52PAyGmyOA_8feK10F42tgJxmdUM5Lc3SgwbCQBBd1mRnB-Xv0PIuw6i4suRcQQHdL9rOqlBtngt924GA6HuBuOPljEOc9F5mNud58Nb7iuHTy0B-sJmp61o7za90euzU8EJ9s_CI", aspect: "aspect-square", offset: "" },
     { title: "Vogue Archive", category: "COMMERCE", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqVb8rmzKXGtNT8XjZksqvw5TZjSavIfASQ72VYnPLlAs2zlKrYxds36NOeRAZm3EjI3FNz1ji6OhwgcdPaubunGrS40mV5DhSmhAligwsj32IReZuDpbAD8gJkKH8TUX59sYwc34PnZBob5AcNstAP_sBm3QbHanG1IKP92GN-ENudM2UrADa0YDPCeavpACw4okS8x94QCzM5o5BDUa_VTRLh1kDnucdfaumu-eNW97ovApKw3BJMt_8xqRX1xAMZp3-lBv2izA", aspect: "aspect-[4/5]", offset: "md:translate-y-16" },
@@ -718,13 +760,16 @@ function Footer() {
 
 export default function App() {
   return (
-    <div className="bg-surface selection:bg-secondary selection:text-surface-container-lowest min-h-screen text-on-surface font-body overflow-x-hidden relative">
+    <div className="bg-surface selection:bg-secondary selection:text-surface-container-lowest min-h-screen text-on-surface font-body">
       <Particles />
       <Navbar />
-      <main className="relative z-10">
+      {/* Expertise is outside of any overflow:hidden ancestor so position:sticky works correctly */}
+      <div className="relative z-10">
         <Hero />
         <InfiniteMarquee />
-        <Expertise />
+      </div>
+      <Expertise />
+      <main className="relative z-10 overflow-x-hidden">
         <Work />
         <Stats />
         <Team />
