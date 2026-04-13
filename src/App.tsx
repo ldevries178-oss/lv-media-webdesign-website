@@ -355,30 +355,32 @@ function Expertise() {
 
 
 function Work() {
-
-  const projects = [
-    { title: "Nebula Finance", category: "FINTECH", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCi-gXf4SanHlS_vpi-WJmDP-GbY9uTND2iCmK_Gqp8IOPgbxRuv9nPyDfcBjUgLQ_dY0Z4Eh1CmwyxOO_p5BC4NNAWR4ZNxwHwmpfS5-4jssGRJgqiiB04KhLWFxV381thUx52PAyGmyOA_8feK10F42tgJxmdUM5Lc3SgwbCQBBd1mRnB-Xv0PIuw6i4suRcQQHdL9rOqlBtngt924GA6HuBuOPljEOc9F5mNud58Nb7iuHTy0B-sJmp61o7za90euzU8EJ9s_CI", aspect: "aspect-square", offset: "" },
-    { title: "Vogue Archive", category: "COMMERCE", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqVb8rmzKXGtNT8XjZksqvw5TZjSavIfASQ72VYnPLlAs2zlKrYxds36NOeRAZm3EjI3FNz1ji6OhwgcdPaubunGrS40mV5DhSmhAligwsj32IReZuDpbAD8gJkKH8TUX59sYwc34PnZBob5AcNstAP_sBm3QbHanG1IKP92GN-ENudM2UrADa0YDPCeavpACw4okS8x94QCzM5o5BDUa_VTRLh1kDnucdfaumu-eNW97ovApKw3BJMt_8xqRX1xAMZp3-lBv2izA", aspect: "aspect-[4/5]", offset: "md:translate-y-16" },
-    { title: "Zenith Health", category: "LIFESTYLE", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDyayA8mprHDXT64Uw6RGsOWaPfDBuzhN22zTwagAlT8iCyiPas9SKWaMcaalZd7DFJ7X9E3VNUXWUrE_Px8QpnWOFA8YTFSTMxDjA9wMSUymn4UxVgRQsEv1DGchrS4NP9wYgGuoT3IZh5kxiMtIwhBb5wYeBH8LzXEZ5OGvQgt9JWNpuhImVGR5eT1Ju0HvPRmN0QOH2jKKzrkmaRo0nvw7SkLtpbs1istdX1qIqXEvJSLeOw3AoNkhlo2w16JFtT5DVAOqm9UeM", aspect: "aspect-[4/5]", offset: "md:-translate-y-16" },
-    { title: "Axiom Labs", category: "CORPORATE", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBoqotwUqBJRQCbI2KxPpSgkTkjWviYvHFxE6BpLKIa5snTVqx4ZpTaISDpNwyeqrPA4EIYbY8rLCD14H6i-PRXd9hwlHcGBE3qI5oQ019wrm7tczkz5VM4F5HEACxfGh1gvCF1a30_rtGrDUKBSePiapt3HsSDeV0IcIIa8SIA0h9srDOFHuA0N0e2yPhnNxUErzDvibROpKRLUkGD-TCCkG6RX5S4erjypRaUBBB1Ce2UezBM4RcLjpOteaXNkaxvxYe0SgF7Sz8", aspect: "aspect-square", offset: "" }
-  ];
-
   return (
-    <section className="pt-12 pb-24 md:pt-16 md:pb-32 bg-surface-container-lowest relative z-10" id="work">
-      <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-16 md:mb-24 text-center">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Onze Portfolio</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Geselecteerd Werk.</h2>
-      </FadeIn>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-6 md:px-12 max-w-7xl mx-auto">
-        {projects.map((p, i) => (
-          <FadeIn key={i} delay={i * 0.1} className={`relative group overflow-hidden rounded-2xl ${p.aspect} ${p.offset}`}>
-            <img src={p.img} alt={p.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" referrerPolicy="no-referrer" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-10 flex flex-col justify-end">
-              <span className="text-secondary text-xs font-bold mb-2 uppercase">{p.category}</span>
-              <h3 className="text-3xl font-headline italic text-white">{p.title}</h3>
-            </div>
-          </FadeIn>
-        ))}
+    <section className="pt-16 pb-24 md:pt-24 md:pb-32 bg-surface-container-lowest relative z-10" id="work">
+      <div className="px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <FadeIn className="mb-12">
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Vlaggenschip Referentie</span>
+          <h2 className="font-headline italic text-4xl md:text-6xl lg:text-7xl text-white mb-6">Ons Vlaggenschip: <br className="hidden md:block" /> Internationaal BJJ Platform</h2>
+          <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed">
+            Als officiële website-partner hebben wij een high-end platform ontwikkeld dat internationale atleten, sponsors en fans verbindt. Razendsnel, SEO-geoptimaliseerd en gebouwd voor maximale conversie.
+          </p>
+        </FadeIn>
+        
+        <FadeIn delay={0.2} className="w-full relative group rounded-3xl overflow-hidden mb-12 border border-outline-variant/20 bg-surface-container shadow-2xl relative">
+          <img 
+            src="/bjj-platform-hero.jpg.png" 
+            alt="Internationaal BJJ Platform" 
+            loading="lazy" 
+            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-50 group-hover:opacity-0 transition-opacity duration-500" />
+        </FadeIn>
+        
+        <FadeIn delay={0.4}>
+          <button className="bg-primary text-on-primary-container px-10 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">
+            Bekijk de Live Casus
+          </button>
+        </FadeIn>
       </div>
     </section>
   );
