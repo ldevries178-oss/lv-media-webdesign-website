@@ -366,12 +366,12 @@ function Work() {
           </p>
         </FadeIn>
         
-        <FadeIn delay={0.2} className="w-full relative group rounded-3xl overflow-hidden mb-12 border border-outline-variant/20 bg-surface-container shadow-2xl relative">
+        <FadeIn delay={0.2} className="w-full group rounded-3xl overflow-hidden mb-12 border border-outline-variant/20 bg-surface-container-high shadow-2xl relative aspect-video min-h-[300px]">
           <img 
             src="/bjj-platform-hero.jpg.png" 
             alt="Internationaal BJJ Platform" 
             loading="lazy" 
-            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-50 group-hover:opacity-0 transition-opacity duration-500" />
         </FadeIn>
