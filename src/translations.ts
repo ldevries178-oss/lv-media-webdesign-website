@@ -29,7 +29,7 @@ export const translations = {
       tag: 'Premium Add-Ons',
       titleTop: 'Investeringen voor directe impact',
       titleBottom: 'op sponsordeals.',
-      scrollHint: 'Scroll om te ontdekken',
+
       cards: [
         { title: "100% Custom Webdesign", desc: "Elk profiel wordt volledig op maat gebouwd. Passend bij jouw unieke identiteit, stijl en brand. Geen templates, enkel premium design.", list: ["Unieke Identiteit", "Snelle Performance", "Premium Uitstraling"] },
         { title: "Pro SEO & GEO Dominance", desc: "Vergroot je marktwaarde lokaal én internationaal met ijzersterk SEO-fundament. Word bovenaan gevonden door fans en sponsors.", list: ["Lokale Dominantie", "Internationale Zichtbaarheid", "Verhoogde Traffic"] },
@@ -167,7 +167,7 @@ export const translations = {
       tag: 'Premium Add-Ons',
       titleTop: 'Investments for direct impact',
       titleBottom: 'on sponsorship deals.',
-      scrollHint: 'Scroll to discover',
+
       cards: [
         { title: "100% Custom Web Design", desc: "Every profile is entirely custom built. Tailored to your unique identity, style, and brand. No templates, only premium design.", list: ["Unique Identity", "Fast Performance", "Premium Look"] },
         { title: "Pro SEO & GEO Dominance", desc: "Increase your market value locally and internationally with a rock-solid SEO foundation. Get found at the top by fans and sponsors.", list: ["Local Dominance", "International Visibility", "Increased Traffic"] },
@@ -305,7 +305,7 @@ export const translations = {
       tag: 'Extensions Premium',
       titleTop: 'Investissements pour un impact',
       titleBottom: 'direct sur les sponsors.',
-      scrollHint: 'Défilez pour découvrir',
+
       cards: [
         { title: "Web Design 100% Sur Mesure", desc: "Chaque profil est entièrement construit sur mesure. Adapté à votre identité, style et marque uniques. Zéro template, uniquement du design premium.", list: ["Identité Unique", "Performance Rapide", "Allure Premium"] },
         { title: "Domination Pro SEO & GEO", desc: "Augmentez votre valeur sur le marché local et international avec une stratégie SEO en béton. Soyez trouvé en tête par les fans et les sponsors.", list: ["Domination Locale", "Visibilité Internationale", "Trafic Accru"] },
@@ -443,7 +443,7 @@ export const translations = {
       tag: 'Premium Zusatzmodule',
       titleTop: 'Investitionen für direkten Einfluss',
       titleBottom: 'auf Sponsorenverträge.',
-      scrollHint: 'Scrollen zum Entdecken',
+
       cards: [
         { title: "100% Custom Webdesign", desc: "Jedes Profil wird komplett maßgeschneidert. Abgestimmt auf deine einzigartige Identität, deinen Stil und deine Marke. Keine Templates, nur Premium-Design.", list: ["Einzigartige Identität", "Schnelle Performance", "Premium Look"] },
         { title: "Pro SEO & GEO Dominanz", desc: "Steigere deinen Marktwert lokal und international mit einem soliden SEO-Fundament. Werde von Fans und Sponsoren an der Spitze gefunden.", list: ["Lokale Dominanz", "Internationale Sichtbarkeit", "Mehr Traffic"] },

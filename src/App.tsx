@@ -335,13 +335,16 @@ function Expertise({ t }: { t: any }) {
     };
   }, [scrollYProgress, CARD_COUNT]);
 
-  // Determine active card index for visual highlighting
+  // Determine active card index + per-card fractional offset for parallax
   const [activeIndex, setActiveIndex] = useState(0);
+  const [cardFrac, setCardFrac] = useState(0); // fractional offset from active card center
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (progress) => {
       const maxIndex = CARD_COUNT - 1;
-      const idx = Math.round(progress * maxIndex);
+      const cardProgress = progress * maxIndex;
+      const idx = Math.round(cardProgress);
       setActiveIndex(Math.min(Math.max(idx, 0), maxIndex));
+      setCardFrac(cardProgress - idx); // -0.5 to +0.5 range
     });
     return unsub;
   }, [scrollYProgress, CARD_COUNT]);
@@ -384,35 +387,52 @@ function Expertise({ t }: { t: any }) {
             }}
             className="flex items-stretch gap-8 w-max px-[10vw] py-6"
           >
-            {t.expertise.cards.map((s: any, i: number) => (
-              <div
-                key={i}
-                data-card
-                className={`flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[420px] bg-surface-container-low border p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative transition-all duration-300 ease-out ${
-                  activeIndex === i
-                    ? 'border-secondary/40 scale-[1.02] shadow-[0_0_60px_rgba(47,248,1,0.08)]'
-                    : 'border-outline-variant/20 opacity-40 scale-95'
-                }`}
-              >
-                <div className="absolute top-4 right-4 w-24 h-24 bg-secondary/5 blur-3xl group-hover:bg-secondary/10 transition-colors duration-500 pointer-events-none" />
-                <div className="relative z-10">
-                  <div className="text-secondary mb-6 transition-transform duration-500 group-hover:scale-110 origin-left">
-                    {icons[i]}
+            {t.expertise.cards.map((s: any, i: number) => {
+              const isActive = activeIndex === i;
+              const isLast = i === CARD_COUNT - 1;
+              // Parallax: shift icon based on how far we are from this card's center
+              const parallaxOffset = isActive ? cardFrac * 24 : 0;
+
+              return (
+                <div
+                  key={i}
+                  data-card
+                  className={`flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[420px] bg-surface-container-low border p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_80px_rgba(47,248,1,0.12)] ${
+                    isActive
+                      ? 'border-secondary/40 scale-[1.02] shadow-[0_0_60px_rgba(47,248,1,0.08)]'
+                      : 'border-outline-variant/20 opacity-40 scale-95'
+                  }`}
+                >
+                  {/* Badge on last card */}
+                  {isLast && (
+                    <span className="absolute top-6 right-6 bg-secondary text-surface px-3 py-1 text-[10px] font-black uppercase tracking-wider rounded-full shadow-[0_0_20px_rgba(47,248,1,0.3)] z-20">
+                      New
+                    </span>
+                  )}
+
+                  <div className="absolute top-4 right-4 w-24 h-24 bg-secondary/5 blur-3xl group-hover:bg-secondary/10 transition-colors duration-500 pointer-events-none" />
+                  <div className="relative z-10">
+                    <div
+                      className="text-secondary mb-6 transition-transform duration-500 group-hover:scale-110 origin-left"
+                      style={{ transform: `translateX(${parallaxOffset}px)` }}
+                    >
+                      {icons[i]}
+                    </div>
+                    <h3 className="text-2xl font-headline italic text-white mb-4 group-hover:text-secondary transition-colors duration-300">
+                      {s.title}
+                    </h3>
+                    <p className="text-on-surface-variant text-sm leading-relaxed mb-8">{s.desc}</p>
                   </div>
-                  <h3 className="text-2xl font-headline italic text-white mb-4 group-hover:text-secondary transition-colors duration-300">
-                    {s.title}
-                  </h3>
-                  <p className="text-on-surface-variant text-sm leading-relaxed mb-8">{s.desc}</p>
+                  <ul className="space-y-3 text-sm text-secondary/70 relative z-10 pt-6 border-t border-white/5">
+                    {s.list.map((item: string, j: number) => (
+                      <li key={j} className="flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary/40" /> {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-3 text-sm text-secondary/70 relative z-10 pt-6 border-t border-white/5">
-                  {s.list.map((item: string, j: number) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-secondary/40" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -430,18 +450,7 @@ function Expertise({ t }: { t: any }) {
           ))}
         </div>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-          <span className="text-[10px] tracking-widest uppercase font-bold text-white/60">
-            {t.expertise.scrollHint || 'Scroll to explore'}
-          </span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-4 h-4 text-white/40" />
-          </motion.div>
-        </div>
+
       </div>
     </section>
   );
