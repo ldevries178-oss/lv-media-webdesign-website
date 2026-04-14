@@ -274,12 +274,77 @@ function InfiniteMarquee({ t }: { t: any }) {
 
 function Expertise({ t }: { t: any }) {
   const targetRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [translateX, setTranslateX] = useState(0);
+
+  const CARD_COUNT = t.expertise.cards.length; // 4
+
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"]
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "calc(-100% + 100vw)"]);
+  // Calculate the exact pixel offset to center each card
+  useEffect(() => {
+    function calcTranslate() {
+      const track = trackRef.current;
+      if (!track) return;
+      const cards = track.querySelectorAll<HTMLElement>('[data-card]');
+      if (cards.length === 0) return;
+
+      const progress = scrollYProgress.get();
+      const vw = window.innerWidth;
+
+      // For each card, compute offset that centers it
+      const centers: number[] = [];
+      cards.forEach((card) => {
+        const cardLeft = card.offsetLeft;
+        const cardWidth = card.offsetWidth;
+        // Offset to center this card in viewport
+        centers.push(cardLeft + cardWidth / 2 - vw / 2);
+      });
+
+      // Map progress to card index (with dwell time at each card)
+      // progress 0 => card 0 centered
+      // progress 1 => last card centered
+      const maxIndex = centers.length - 1;
+      const cardProgress = progress * maxIndex;
+      const idx = Math.min(Math.floor(cardProgress), maxIndex - 1);
+      const frac = cardProgress - idx;
+
+      let offset: number;
+      if (cardProgress <= 0) {
+        offset = centers[0];
+      } else if (cardProgress >= maxIndex) {
+        offset = centers[maxIndex];
+      } else {
+        // Smooth interpolation between card centers
+        offset = centers[idx] + (centers[idx + 1] - centers[idx]) * frac;
+      }
+
+      setTranslateX(-offset);
+    }
+
+    calcTranslate();
+
+    const unsub = scrollYProgress.on("change", calcTranslate);
+    window.addEventListener("resize", calcTranslate);
+    return () => {
+      unsub();
+      window.removeEventListener("resize", calcTranslate);
+    };
+  }, [scrollYProgress, CARD_COUNT]);
+
+  // Determine active card index for visual highlighting
+  const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => {
+    const unsub = scrollYProgress.on("change", (progress) => {
+      const maxIndex = CARD_COUNT - 1;
+      const idx = Math.round(progress * maxIndex);
+      setActiveIndex(Math.min(Math.max(idx, 0), maxIndex));
+    });
+    return unsub;
+  }, [scrollYProgress, CARD_COUNT]);
 
   const icons = [
     <PenTool className="w-8 h-8" />,
@@ -292,10 +357,12 @@ function Expertise({ t }: { t: any }) {
     <section 
       id="diensten" 
       ref={targetRef}
-      className="bg-surface relative z-10 h-[400vh]"
+      className="bg-surface relative z-10"
+      style={{ height: `${CARD_COUNT * 100}vh` }}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden w-full pt-20 md:pt-32">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-12 md:mb-16 text-center md:text-left w-full flex-shrink-0">
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden w-full pt-20 md:pt-28">
+        {/* Section header */}
+        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-8 md:mb-12 text-center md:text-left w-full flex-shrink-0">
           <FadeIn>
             <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">
               {t.expertise.tag}
@@ -306,16 +373,26 @@ function Expertise({ t }: { t: any }) {
           </FadeIn>
         </div>
 
-        {/* Horizontal Scroll Snap Carousel */}
-        <div className="flex-1 flex flex-col justify-center pb-20 md:pb-0">
-          <motion.div 
-            style={{ x }}
-            className="flex items-center w-max px-[7.5vw] md:px-[max(20vw,calc(50vw-400px))] gap-8"
+        {/* Horizontal card track */}
+        <div className="flex-1 flex flex-col justify-center overflow-hidden pb-16 md:pb-0">
+          <div
+            ref={trackRef}
+            style={{
+              transform: `translateX(${translateX}px)`,
+              transition: 'none',
+              willChange: 'transform',
+            }}
+            className="flex items-stretch gap-8 w-max"
           >
             {t.expertise.cards.map((s: any, i: number) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[450px] bg-surface-container-low border border-outline-variant/20 p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 hover:border-secondary/30"
+                data-card
+                className={`flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[420px] bg-surface-container-low border p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 ${
+                  activeIndex === i
+                    ? 'border-secondary/40 scale-[1.02] shadow-[0_0_60px_rgba(47,248,1,0.08)]'
+                    : 'border-outline-variant/20 opacity-40 scale-95'
+                }`}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
                 <div className="relative z-10">
@@ -336,6 +413,33 @@ function Expertise({ t }: { t: any }) {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Progress dots */}
+        <div className="flex justify-center gap-3 pb-8 md:pb-12">
+          {t.expertise.cards.map((_: any, i: number) => (
+            <div
+              key={i}
+              className={`rounded-full transition-all duration-500 ${
+                activeIndex === i
+                  ? 'w-8 h-2 bg-secondary shadow-[0_0_10px_rgba(47,248,1,0.5)]'
+                  : 'w-2 h-2 bg-white/20'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Scroll hint */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+          <span className="text-[10px] tracking-widest uppercase font-bold text-white/60">
+            {t.expertise.scrollHint || 'Scroll to explore'}
+          </span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-4 h-4 text-white/40" />
           </motion.div>
         </div>
       </div>
