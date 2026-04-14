@@ -1,6 +1,7 @@
-import { motion, useInView, useScroll, useTransform } from 'motion/react';
-import { Menu, Globe, ChevronDown, ArrowLeft, ArrowRight, PenTool, Code, Brain, TrendingUp, Check, Plus, Mail, MapPin, Minus, Twitter, Linkedin, Instagram, Star } from 'lucide-react';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { Menu, Globe, ChevronDown, ArrowLeft, ArrowRight, PenTool, Code, Brain, TrendingUp, Check, Plus, Mail, MapPin, Minus, Twitter, Linkedin, Instagram, Star, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { translations, Language } from './translations';
 
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
   return (
@@ -84,35 +85,35 @@ function Particles() {
   return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-40" />;
 }
 
-function Navbar() {
+function Navbar({ currentLang, setCurrentLang, t }: { currentLang: Language, setCurrentLang: (l: Language) => void, t: any }) {
   const [activeLink, setActiveLink] = useState('services');
-  const [currentLang, setCurrentLang] = useState('NL');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl shadow-[0_0_20px_rgba(47,248,1,0.05)]">
-      <div className="flex justify-between items-center px-6 md:px-12 py-6 max-w-7xl mx-auto">
+    <nav className="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl shadow-[0_0_20px_rgba(47,248,1,0.05)] border-b border-white/5">
+      <div className="flex justify-between items-center px-6 md:px-12 py-6 max-w-7xl mx-auto w-full">
         <a className="font-headline italic text-2xl font-bold text-white tracking-tighter" href="#">LV MEDIA</a>
         <div className="hidden md:flex items-center gap-10">
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'diensten' ? 'text-secondary' : 'text-white/70'}`} 
             href="#diensten"
             onClick={() => setActiveLink('diensten')}
-          >Add-ons</a>
+          >{t.nav.addons}</a>
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'work' ? 'text-secondary' : 'text-white/70'}`} 
             href="#work"
             onClick={() => setActiveLink('work')}
-          >Portfolio</a>
+          >{t.nav.portfolio}</a>
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'pricing' ? 'text-secondary' : 'text-white/70'}`} 
             href="#pricing"
             onClick={() => setActiveLink('pricing')}
-          >Investering</a>
+          >{t.nav.pricing}</a>
           <a 
             className={`font-medium text-sm transition-all duration-300 hover:scale-105 hover:text-secondary ${activeLink === 'contact' ? 'text-secondary' : 'text-white/70'}`} 
             href="#contact"
             onClick={() => setActiveLink('contact')}
-          >Contact</a>
+          >{t.nav.contact}</a>
           
           <div className="relative group py-2">
             <button className="flex items-center gap-1.5 text-white/70 hover:text-secondary font-bold text-sm tracking-widest transition-colors">
@@ -120,12 +121,12 @@ function Navbar() {
               <span className="uppercase">{currentLang}</span>
               <ChevronDown className="w-3 h-3 opacity-50 transition-transform group-hover:rotate-180" />
             </button>
-            <div className="absolute top-10 right-1/2 translate-x-1/2 w-20 bg-surface-container-highest/90 backdrop-blur-xl border border-outline-variant/20 rounded-xl overflow-hidden opacity-0 pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-              {['NL', 'EN', 'FR', 'DE'].map(lang => (
+            <div className="absolute top-12 right-0 w-24 bg-surface-container-highest/95 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden opacity-0 pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 transition-all duration-300 shadow-2xl z-[60]">
+              {(['NL', 'EN', 'FR', 'DE'] as Language[]).map(lang => (
                 <button 
                   key={lang}
                   onClick={() => setCurrentLang(lang)}
-                  className={`w-full text-center px-4 py-2.5 text-xs font-bold tracking-widest transition-colors ${currentLang === lang ? 'bg-secondary/20 text-secondary' : 'text-white/70 hover:bg-surface-container-lowest hover:text-white'}`}
+                  className={`w-full text-center px-4 py-3 text-xs font-bold tracking-widest transition-all ${currentLang === lang ? 'bg-secondary/20 text-secondary' : 'text-white/70 hover:bg-white/5 hover:text-white'}`}
                 >
                   {lang}
                 </button>
@@ -133,12 +134,48 @@ function Navbar() {
             </div>
           </div>
 
-          <button className="bg-primary text-on-primary-container px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform duration-300">Maximaliseer je Waarde</button>
+          <button className="bg-primary text-on-primary-container px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-secondary/20">{t.nav.cta}</button>
         </div>
-        <button className="md:hidden text-white" aria-label="Toggle mobile menu">
-          <Menu />
+        <button className="md:hidden text-white hover:text-secondary transition-colors" aria-label="Toggle mobile menu" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-surface-container-highest/95 backdrop-blur-2xl border-b border-white/5 overflow-hidden"
+          >
+            <div className="px-6 py-8 flex flex-col gap-6">
+              {['diensten', 'work', 'pricing', 'contact'].map((id) => (
+                <a 
+                  key={id}
+                  href={`#${id}`} 
+                  onClick={() => { setIsMenuOpen(false); setActiveLink(id); }}
+                  className={`text-2xl font-headline italic ${activeLink === id ? 'text-secondary' : 'text-white/70'}`}
+                >
+                  {t.nav[id === 'diensten' ? 'addons' : id]}
+                </a>
+              ))}
+              <div className="flex gap-4 pt-4 border-t border-white/10">
+                {(['NL', 'EN', 'FR', 'DE'] as Language[]).map(lang => (
+                  <button 
+                    key={lang}
+                    onClick={() => { setCurrentLang(lang); setIsMenuOpen(false); }}
+                    className={`px-3 py-2 rounded-lg text-xs font-bold tracking-widest ${currentLang === lang ? 'bg-secondary/20 text-secondary' : 'text-white/50'}`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
@@ -243,113 +280,89 @@ function InfiniteMarquee() {
   );
 }
 
-function Expertise() {
-  const CARD_W = 400;
-  const CARD_H = 400;
-  const CARD_GAP = 28;
-  const CARDS = 4;
-  const TRACK_W = CARDS * CARD_W + (CARDS - 1) * CARD_GAP;
-
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  // Use Framer Motion's scroll-tracking correctly
-  const { scrollYProgress } = useScroll({
-    target: wrapperRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Compute x: at progress=0 all cards are off-screen RIGHT; at progress=1 last card is in view
-  const x = useTransform(scrollYProgress, [0, 1], [
-    typeof window !== "undefined" ? window.innerWidth : 1440,
-    -(TRACK_W - (typeof window !== "undefined" ? window.innerWidth : 1440) + 80)
-  ]);
-
-  const services = [
-    { icon: <PenTool className="w-8 h-8" />, title: "100% Custom Webdesign", desc: "Elk profiel wordt volledig op maat gebouwd. Passend bij jouw unieke identiteit, stijl en brand. Geen templates, enkel premium design.", list: ["Unieke Identiteit", "Snelle Performance", "Premium Uitstraling"] },
-    { icon: <TrendingUp className="w-8 h-8" />, title: "Pro SEO & GEO Dominance", desc: "Vergroot je marktwaarde lokaal én internationaal met ijzersterk SEO-fundament. Word bovenaan gevonden door fans en sponsors.", list: ["Lokale Dominantie", "Internationale Zichtbaarheid", "Verhoogde Traffic"] },
-    { icon: <Code className="w-8 h-8" />, title: "Sponsor Integratie Modules", desc: "Maximaliseer je ROI voor partners met prominente dynamische ad-spaces. Trek direct grotere en professionelere sponsordeals aan.", list: ["Dynamische Banners", "Call-To-Actions", "Directe ROI"] },
-    { icon: <Brain className="w-8 h-8" />, title: "Interactieve Match Records", desc: "Laat je overwinningen en statistieken spreken via indrukwekkende, dynamische archieven in plaats van statische lijstjes.", list: ["Visuele Data", "Carrière Tijdlijn", "Live Updates"] }
+function Expertise({ t }: { t: any }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  
+  const icons = [
+    <PenTool className="w-8 h-8" />,
+    <TrendingUp className="w-8 h-8" />,
+    <Code className="w-8 h-8" />,
+    <Brain className="w-8 h-8" />
   ];
 
   return (
-    /* 
-      The wrapper must NOT have overflow:hidden — that would break position:sticky on the inner container.
-      It must be position:relative so that sticky children are pinned relative to this.
-    */
-    <div
-      ref={wrapperRef}
-      id="diensten"
-      style={{ position: "relative", height: "300vh", background: "var(--color-surface, #0e0e0e)" }}
-      className="z-10"
-    >
-      {/* STICKY CONTAINER — stays in the viewport while user scrolls the 300vh wrapper */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+    <section id="diensten" className="py-24 md:py-32 bg-surface relative z-10 overflow-hidden">
+      <div className="px-6 md:px-12 max-w-7xl mx-auto mb-16">
+        <FadeIn>
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">
+            {t.expertise.tag}
+          </span>
+          <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-6 leading-[1.1]">
+            {t.expertise.titleTop}<br/>{t.expertise.titleBottom}
+          </h2>
+        </FadeIn>
+      </div>
+
+      {/* Horizontal Scroll Snap Carousel */}
+      <div 
+        ref={scrollRef}
+        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 px-6 md:px-12 pb-12 w-full touch-pan-x"
+        style={{ 
+          scrollPaddingLeft: '24px',
+          scrollPaddingRight: '24px'
         }}
       >
-        {/* Section header */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "96px 48px 0", zIndex: 10 }}>
-          <span style={{ color: "var(--color-secondary, #2ff801)", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", display: "block", marginBottom: "12px" }}>
-            Premium Add-Ons
-          </span>
-          <h2 style={{ fontFamily: "var(--font-headline, serif)", fontStyle: "italic", fontSize: "clamp(2rem, 4vw, 3rem)", color: "white", lineHeight: 1.1, fontWeight: 700, margin: 0 }}>
-            Investeringen voor directe impact<br/>op sponsordeals.
-          </h2>
-        </div>
-
-        {/* HORIZONTAL TRACK — animated by vertical scroll-progress */}
-        <motion.div
-          style={{
-            x,
-            display: "flex",
-            gap: `${CARD_GAP}px`,
-            paddingLeft: "48px",
-            willChange: "transform",
-            marginTop: "64px", // push cards below the heading
-          }}
-        >
-          {services.map((s, i) => (
-            <div
-              key={i}
-              style={{ width: `${CARD_W}px`, height: `${CARD_H}px`, flexShrink: 0 }}
-              className="bg-surface-container-low border border-outline-variant/20 p-8 rounded-2xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-secondary/10 transition-colors duration-500" />
-              <div className="relative z-10">
-                <div className="text-secondary mb-5 transition-transform duration-500 group-hover:scale-110 origin-left">
-                  {s.icon}
-                </div>
-                <h3 className="text-xl font-headline italic text-white mb-3 group-hover:text-secondary transition-colors duration-300">
-                  {s.title}
-                </h3>
-                <p className="text-on-surface-variant text-sm leading-relaxed">{s.desc}</p>
+        {t.expertise.cards.map((s: any, i: number) => (
+          <div
+            key={i}
+            className="flex-shrink-0 w-[85vw] md:w-[400px] snap-center md:snap-align-none bg-surface-container-low border border-outline-variant/20 p-8 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 hover:border-secondary/30"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
+            <div className="relative z-10">
+              <div className="text-secondary mb-6 transition-transform duration-500 group-hover:scale-110 origin-left">
+                {icons[i]}
               </div>
-              <ul className="space-y-2.5 text-sm text-secondary/70 relative z-10">
-                {s.list.map((item, j) => (
-                  <li key={j} className="flex items-center gap-3">
-                    <Plus className="w-3 h-3 text-secondary flex-shrink-0" /> {item}
-                  </li>
-                ))}
-              </ul>
+              <h3 className="text-2xl font-headline italic text-white mb-4 group-hover:text-secondary transition-colors duration-300">
+                {s.title}
+              </h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-8">{s.desc}</p>
             </div>
-          ))}
-        </motion.div>
+            <ul className="space-y-3 text-sm text-secondary/70 relative z-10 pt-6 border-t border-white/5">
+              {s.list.map((item: string, j: number) => (
+                <li key={j} className="flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-secondary/40" /> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {/* Extra padding to ensure the last card can be centered/fully visible */}
+        <div className="flex-shrink-0 w-[5vw] md:w-[25vw] pointer-events-none" />
+      </div>
 
-        {/* Scroll hint */}
-        <div style={{ position: "absolute", bottom: "24px", left: "50%", transform: "translateX(-50%)" }} className="flex items-center gap-2 text-white/25 text-xs font-bold tracking-widest uppercase select-none pointer-events-none">
-          <ArrowLeft className="w-3 h-3" />
-          <span>Scroll om te ontdekken</span>
-          <ArrowRight className="w-3 h-3" />
+      {/* Scroll controls/hint */}
+      <div className="px-6 md:px-12 max-w-7xl mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-2 text-white/30 text-xs font-bold tracking-widest uppercase select-none active:text-secondary transition-colors">
+          <ArrowLeft className="w-3 h-3 animate-pulse" />
+          <span>{t.expertise.scrollHint}</span>
+          <ArrowRight className="w-3 h-3 animate-pulse" />
+        </div>
+        <div className="hidden md:flex gap-2">
+          <button 
+            onClick={() => scrollRef.current?.scrollBy({ left: -400, behavior: 'smooth' })}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:text-secondary transition-all"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <button 
+            onClick={() => scrollRef.current?.scrollBy({ left: 400, behavior: 'smooth' })}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:text-secondary transition-all"
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -366,7 +379,7 @@ function Work() {
           </p>
         </FadeIn>
         
-        <FadeIn delay={0.2} className="w-full group rounded-3xl overflow-hidden mb-12 border border-outline-variant/20 bg-surface-container-high shadow-2xl relative aspect-video min-h-[300px]">
+        <FadeIn delay={0.2} className="w-full group rounded-3xl overflow-hidden mb-12 border border-outline-variant/20 bg-surface-container-high shadow-2xl relative aspect-video min-h-[300px] md:min-h-[450px]">
           <img 
             src="/bjj-platform-hero.jpg.png" 
             alt="Internationaal BJJ Platform" 
