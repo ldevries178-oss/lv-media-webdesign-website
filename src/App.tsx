@@ -180,7 +180,7 @@ function Navbar({ currentLang, setCurrentLang, t }: { currentLang: Language, set
   );
 }
 
-function Hero() {
+function Hero({ t }: { t: any }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -221,7 +221,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           className="inline-block px-4 py-1.5 mb-8 rounded-full border border-outline-variant/30 bg-surface-container-low text-xs tracking-widest uppercase font-bold text-secondary"
         >
-          Exclusief Voor Atleten
+          {t.hero.tag}
         </motion.span>
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
@@ -229,7 +229,7 @@ function Hero() {
           transition={{ delay: 0.1 }}
           className="font-headline italic text-5xl md:text-7xl lg:text-8xl text-on-surface leading-[0.95] tracking-tighter mb-8"
         >
-          Maximaliseer je marktwaarde <br/> en <span className="text-secondary">trek sponsors aan.</span>
+          {t.hero.titlePrimary} <br/> <span className="text-secondary">{t.hero.titleSecondary}</span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
@@ -237,7 +237,7 @@ function Hero() {
           transition={{ delay: 0.2 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg font-light mb-12 leading-relaxed"
         >
-          Wij leveren 100% custom webdesign, volledig ontworpen passend bij jouw unieke identiteit. Maak indruk met een premium platform dat jouw professionele waarde direct verhoogt.
+          {t.hero.desc}
         </motion.p>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -245,30 +245,22 @@ function Hero() {
           transition={{ delay: 0.3 }}
           className="flex flex-col md:flex-row gap-6 justify-center items-center"
         >
-          <button className="bg-primary text-on-primary-container px-8 py-4 rounded-full font-bold text-base hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">Start Jouw Project</button>
-          <button className="border border-primary text-primary px-8 py-4 rounded-full font-bold text-base hover:bg-primary/5 transition-colors">Bekijk Portfolio</button>
+          <button className="bg-primary text-on-primary-container px-8 py-4 rounded-full font-bold text-base hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">{t.hero.ctaPrimary}</button>
+          <button className="border border-primary text-primary px-8 py-4 rounded-full font-bold text-base hover:bg-primary/5 transition-colors">{t.hero.ctaSecondary}</button>
         </motion.div>
       </div>
     </section>
   );
 }
 
-function InfiniteMarquee() {
-  const items = [
-    "100% Custom Webdesign",
-    "Sponsor Integratie Modules",
-    "Interactieve Match Records",
-    "Pro SEO & GEO Dominance",
-    "Top-Snelheid Performance",
-    "Unieke Atleet Identiteit"
-  ];
+function InfiniteMarquee({ t }: { t: any }) {
 
   return (
     <section className="py-12 bg-surface-container-low overflow-hidden whitespace-nowrap border-y border-outline-variant/10">
       <div className="flex items-center animate-marquee gap-12 min-w-max will-change-transform">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="flex items-center gap-12 text-white/90 text-lg md:text-xl font-headline italic pr-12">
-            {items.map((item, j) => (
+            {t.marqueeItems.map((item: string, j: number) => (
               <span key={j} className="flex items-center gap-4">
                 <span className="w-2 h-2 bg-secondary rounded-full"></span> {item}
               </span>
@@ -297,7 +289,7 @@ function Expertise({ t }: { t: any }) {
           <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">
             {t.expertise.tag}
           </span>
-          <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-6 leading-[1.1]">
+          <h2 className="font-headline italic text-4xl md:text-6xl text-white">
             {t.expertise.titleTop}<br/>{t.expertise.titleBottom}
           </h2>
         </FadeIn>
@@ -309,7 +301,7 @@ function Expertise({ t }: { t: any }) {
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 px-6 md:px-12 pb-12 w-full touch-pan-x"
         style={{ 
           scrollPaddingLeft: '24px',
-          scrollPaddingRight: '24px'
+          scrollPaddingRight: '50vw'
         }}
       >
         {t.expertise.cards.map((s: any, i: number) => (
@@ -337,7 +329,7 @@ function Expertise({ t }: { t: any }) {
           </div>
         ))}
         {/* Extra padding to ensure the last card can be centered/fully visible */}
-        <div className="flex-shrink-0 w-[5vw] md:w-[25vw] pointer-events-none" />
+        <div className="flex-shrink-0 w-[50vw] pointer-events-none" />
       </div>
 
       {/* Scroll controls/hint */}
@@ -367,15 +359,15 @@ function Expertise({ t }: { t: any }) {
 }
 
 
-function Work() {
+function Work({ t }: { t: any }) {
   return (
     <section className="pt-16 pb-24 md:pt-24 md:pb-32 bg-surface-container-lowest relative z-10" id="work">
       <div className="px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center">
         <FadeIn className="mb-12">
-          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Vlaggenschip Referentie</span>
-          <h2 className="font-headline italic text-4xl md:text-6xl lg:text-7xl text-white mb-6">Ons Vlaggenschip: <br className="hidden md:block" /> Internationaal BJJ Platform</h2>
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.work.tag}</span>
+          <h2 className="font-headline italic text-4xl md:text-6xl lg:text-7xl text-white mb-6">{t.work.titlePrimary} <br className="hidden md:block" /> {t.work.titleSecondary}</h2>
           <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed">
-            Als officiële website-partner hebben wij een high-end platform ontwikkeld dat internationale atleten, sponsors en fans verbindt. Razendsnel, SEO-geoptimaliseerd en gebouwd voor maximale conversie.
+            {t.work.desc}
           </p>
         </FadeIn>
         
@@ -391,7 +383,7 @@ function Work() {
         
         <FadeIn delay={0.4}>
           <button className="bg-primary text-on-primary-container px-10 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.1)]">
-            Bekijk de Live Casus
+            {t.work.cta}
           </button>
         </FadeIn>
       </div>
@@ -424,7 +416,7 @@ function Counter({ from, to, suffix = "" }: { from: number, to: number, suffix?:
   return <span ref={ref}>{display}{suffix}</span>;
 }
 
-function Stats() {
+function Stats({ t }: { t: any }) {
   return (
     <section className="py-40 bg-surface relative z-10">
       <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
@@ -432,26 +424,26 @@ function Stats() {
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={120} suffix="+" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Projecten Voltooid</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">{t.stats.projects}</p>
         </FadeIn>
         <FadeIn delay={0.2} className="flex flex-col items-center justify-center p-12 rounded-3xl bg-secondary-container/10 border border-secondary/20">
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={98} suffix="%" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Tevredenheid</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">{t.stats.satisfaction}</p>
         </FadeIn>
         <FadeIn delay={0.3} className="flex flex-col items-center justify-center p-12 rounded-3xl bg-surface-container-low border border-outline-variant/10">
           <div className="text-6xl md:text-7xl font-headline italic text-secondary mb-6">
             <Counter from={0} to={8} suffix="+" />
           </div>
-          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">Jaren Ervaring</p>
+          <p className="text-lg text-on-surface uppercase tracking-widest font-bold text-center">{t.stats.experience}</p>
         </FadeIn>
       </div>
     </section>
   );
 }
 
-function Team() {
+function Team({ t }: { t: any }) {
   const members = [
     { name: "Sarah Jenkins", role: "Founder & CEO", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzZmJ7OM8agMU6JXLYAPXFKH152yy_oaO-k8K9_U7MCri1kEIKTGnPM2cAH6dQbxemhUhXNMnGLJhMlu58MWfx-VDS0ViJefQ6ZxCszcWxn9XbeGaB6fTgkLUzF7oI_UB8HohNgLXVCvWMOQQguqlNvAyCP1k89dWHQQDESapKQSdABEWlWgifw0zAdrDJFNU4_XA5I9GCKXpQG549AAtRSbMkvao-TwygrznrlFANbUbw6KJX6YrUzvTfjnBFPLGVo8sPfCblZYc" },
     { name: "Michael Chen", role: "Lead Designer", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiKeGq3mcMsn9KNBiM5iHTltthvNftVNQDF1Pc-GzQ-grmlFIr59Hc5-yOce3q2ekAInTJtWySZvW9VA9WF_LvjUg6YKqX0EEFNcvndXp82CiXZ3SZm7GLk57CLcxgKYZudRKSCPXwH5TqK7zUvJ4fMTDHsDvnvfEc0PG5LOnunHcJUf6S211CT4Hpeuxk0lwC-1UifTLCrn7A5KmbtHnk0dOUNHO1IWR_tQQRxiQUZfhIXPePYjguUdrXpf4bQChRkL6uLaccSUM" },
@@ -461,8 +453,8 @@ function Team() {
   return (
     <section className="py-40 relative z-10">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-24">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Gedreven door Expertise</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Geleid door professionals.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.team.tag}</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">{t.team.title}</h2>
       </FadeIn>
       <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16">
         {members.map((m, i) => (
@@ -479,63 +471,54 @@ function Team() {
   );
 }
 
-function Testimonials() {
-  const row1 = [
-    { text: "Mijn online merk was gedateerd. LVmedia voegde direct waarde toe. Sponsor aanvragen zijn sinds de lancering verdubbeld.", name: "Alex V.", role: "BJJ ZWARTE BAND", initial: "A" },
-    { text: "Ongekende kwaliteit en design. Ze begrepen exact hoe mijn unieke vechtersprofiel vertaald moest worden naar het web.", name: "Marcos S.", role: "PROFESSIONAL FIGHTER", initial: "M" },
-    { text: "Het platform is snel, professioneel en trekt de juiste aandacht. Mijn marktwaarde is aanzienlijk toegenomen.", name: "Damian de J.", role: "GRAPPLING KAMPIOEN", initial: "D" }
-  ];
-  
-  const row2 = [
-    { text: "De sponsor integratie modules hebben mijn inkomsten direct vergroot. Dit is geen website, het is een investering.", name: "Sarah K.", role: "MMA FIGHTER", initial: "S" },
-    { text: "Wat een game-changer. Eindelijk een website die de professionaliteit weerspiegelt die ik op de mat laat zien.", name: "Jordy H.", role: "KICKBOKSER", initial: "J" },
-    { text: "Absolute top-tier strategie en uitvoering. Ze luisteren naar wie je bent als atleet en ontwerpen dit tot in perfectie.", name: "Esther R.", role: "BJJ COMPETITOR", initial: "E" }
-  ];
+function Testimonials({ t }: { t: any }) {
+  const row1 = t.testimonials.row1;
+  const row2 = t.testimonials.row2;
 
   return (
     <section className="py-32 bg-surface-container-low/30 overflow-hidden border-y border-outline-variant/10 relative z-10">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-16">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Wat Atleten Zeggen</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-4">Ervaringen</h2>
-        <p className="text-on-surface-variant text-lg">Lees hoe we de professionele carrières van atleten naar een hoger niveau tillen.</p>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.testimonials.tag}</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white mb-4">{t.testimonials.title}</h2>
+        <p className="text-on-surface-variant text-lg">{t.testimonials.desc}</p>
       </FadeIn>
       <div className="flex animate-marquee gap-6 mb-6 min-w-max px-6 md:px-12 will-change-transform">
-        {[...row1, ...row1, ...row1].map((t, i) => (
+        {[...row1, ...row1, ...row1].map((testimonial: any, i: number) => (
           <div key={i} className="bg-surface-container-low border border-outline-variant/20 p-8 rounded-2xl w-[400px] flex-shrink-0 flex flex-col justify-between min-h-[280px]">
             <div>
               <div className="flex gap-1.5 mb-8">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-secondary/80" fill="currentColor" />)}
               </div>
-              <p className="text-on-surface-variant text-base leading-relaxed mb-8">"{t.text}"</p>
+              <p className="text-on-surface-variant text-base leading-relaxed mb-8">"{testimonial.text}"</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full border border-outline-variant/20 bg-surface-container-highest flex items-center justify-center text-white font-bold text-sm">
-                {t.initial}
+                {testimonial.initial}
               </div>
               <div>
-                <p className="text-white font-bold text-sm">{t.name}</p>
-                <p className="text-secondary text-xs font-bold tracking-widest mt-1 uppercase">{t.role}</p>
+                <p className="text-white font-bold text-sm">{testimonial.name}</p>
+                <p className="text-secondary text-xs font-bold tracking-widest mt-1 uppercase">{testimonial.role}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
       <div className="flex animate-marquee-reverse gap-6 min-w-max px-6 md:px-12 will-change-transform">
-        {[...row2, ...row2, ...row2].map((t, i) => (
+        {[...row2, ...row2, ...row2].map((testimonial: any, i: number) => (
           <div key={i} className="bg-surface-container-low border border-outline-variant/20 p-8 rounded-2xl w-[400px] flex-shrink-0 flex flex-col justify-between min-h-[280px]">
             <div>
               <div className="flex gap-1.5 mb-8">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-secondary/80" fill="currentColor" />)}
               </div>
-              <p className="text-on-surface-variant text-base leading-relaxed mb-8">"{t.text}"</p>
+              <p className="text-on-surface-variant text-base leading-relaxed mb-8">"{testimonial.text}"</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full border border-outline-variant/20 bg-surface-container-highest flex items-center justify-center text-white font-bold text-sm">
-                {t.initial}
+                {testimonial.initial}
               </div>
               <div>
-                <p className="text-white font-bold text-sm">{t.name}</p>
-                <p className="text-secondary text-xs font-bold tracking-widest mt-1 uppercase">{t.role}</p>
+                <p className="text-white font-bold text-sm">{testimonial.name}</p>
+                <p className="text-secondary text-xs font-bold tracking-widest mt-1 uppercase">{testimonial.role}</p>
               </div>
             </div>
           </div>
@@ -545,78 +528,70 @@ function Testimonials() {
   );
 }
 
-function Pricing() {
+function Pricing({ t }: { t: any }) {
   return (
     <section className="py-40 relative z-10" id="pricing">
       <FadeIn className="px-6 md:px-12 max-w-7xl mx-auto mb-24 text-center">
-        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Transparant Model</span>
-        <h2 className="font-headline italic text-4xl md:text-6xl text-white">Investering in je Carrière.</h2>
+        <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.pricing.tag}</span>
+        <h2 className="font-headline italic text-4xl md:text-6xl text-white">{t.pricing.title}</h2>
       </FadeIn>
       <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         <FadeIn delay={0.1} className="bg-surface-container-lowest p-10 rounded-3xl border border-outline-variant/10 flex flex-col justify-between">
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-2">Foundation</h3>
-            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">De perfecte basis voor professionele atleten.</p>
-            <div className="text-4xl font-headline italic text-white mb-8">€500 <span className="text-sm font-body not-italic text-on-surface-variant">+ €50 /mnd</span></div>
+            <h3 className="text-xl font-headline italic text-white mb-2">{t.pricing.cards[0].title}</h3>
+            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">{t.pricing.cards[0].subtitle}</p>
+            <div className="text-4xl font-headline italic text-white mb-8">{t.pricing.cards[0].price} <span className="text-sm font-body not-italic text-on-surface-variant">{t.pricing.cards[0].period}</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Premium Custom Design</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Top-snelheid Performance</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Standaard SEO</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Veilig Onderhoud & Hosting</li>
+              {t.pricing.cards[0].features.map((f: string, i: number) => (
+                <li key={i} className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> {f}</li>
+              ))}
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Start Foundation</button>
+          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">{t.pricing.cards[0].cta}</button>
         </FadeIn>
         
         <FadeIn delay={0.2} className="bg-surface-container-highest p-10 rounded-3xl border border-secondary/30 relative flex flex-col justify-between shadow-[0_0_50px_rgba(47,248,1,0.1)] scale-105 z-10">
-          <div className="absolute top-0 right-10 -translate-y-1/2 bg-secondary text-surface px-4 py-1 text-[10px] font-black uppercase tracking-tighter rounded-full">Meest Gekozen</div>
+          <div className="absolute top-0 right-10 -translate-y-1/2 bg-secondary text-surface px-4 py-1 text-[10px] font-black uppercase tracking-tighter rounded-full">{t.pricing.cards[1].badge}</div>
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-2">Pro Athlete</h3>
-            <p className="text-secondary/80 text-xs mb-4 font-bold tracking-widest uppercase min-h-[32px]">Inclusief Upsells</p>
-            <div className="text-3xl font-headline italic text-white mb-8">Maatwerk <span className="text-sm font-body not-italic text-on-surface-variant">/ op aanvraag</span></div>
+            <h3 className="text-xl font-headline italic text-white mb-2">{t.pricing.cards[1].title}</h3>
+            <p className="text-secondary/80 text-xs mb-4 font-bold tracking-widest uppercase min-h-[32px]">{t.pricing.cards[1].subtitle}</p>
+            <div className="text-3xl font-headline italic text-white mb-8">{t.pricing.cards[1].price} <span className="text-sm font-body not-italic text-on-surface-variant">{t.pricing.cards[1].period}</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Foundation Inbegrepen</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Pro SEO & GEO Dominance</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Sponsor Integratie Modules</li>
-              <li className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> Priority Support & Updates</li>
+              {t.pricing.cards[1].features.map((f: string, i: number) => (
+                <li key={i} className="flex items-center gap-3 text-on-surface text-sm font-medium"><Check className="text-secondary w-4 h-4" /> {f}</li>
+              ))}
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full bg-primary text-on-primary-container text-sm font-bold hover:scale-105 transition-transform">Maximaliseer Zichtbaarheid</button>
+          <button className="w-full py-4 rounded-full bg-primary text-on-primary-container text-sm font-bold hover:scale-105 transition-transform">{t.pricing.cards[1].cta}</button>
         </FadeIn>
 
         <FadeIn delay={0.3} className="bg-surface-container-lowest p-10 rounded-3xl border border-outline-variant/10 flex flex-col justify-between">
           <div>
-            <h3 className="text-xl font-headline italic text-white mb-2">Champion</h3>
-            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">Voor de absolute top in de sport.</p>
-            <div className="text-3xl font-headline italic text-white mb-8">Maatwerk <span className="text-sm font-body not-italic text-on-surface-variant">/ op aanvraag</span></div>
+            <h3 className="text-xl font-headline italic text-white mb-2">{t.pricing.cards[2].title}</h3>
+            <p className="text-on-surface-variant text-xs mb-4 min-h-[32px]">{t.pricing.cards[2].subtitle}</p>
+            <div className="text-3xl font-headline italic text-white mb-8">{t.pricing.cards[2].price} <span className="text-sm font-body not-italic text-on-surface-variant">{t.pricing.cards[2].period}</span></div>
             <ul className="space-y-4 mb-12">
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Alles in Pro Athlete</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Interactieve Match Records</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Volledig Maatwerk Platform</li>
-              <li className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> Dedicated Account Manager</li>
+              {t.pricing.cards[2].features.map((f: string, i: number) => (
+                <li key={i} className="flex items-center gap-3 text-on-surface-variant text-sm"><Check className="text-secondary w-4 h-4" /> {f}</li>
+              ))}
             </ul>
           </div>
-          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">Word een Champion</button>
+          <button className="w-full py-4 rounded-full border border-primary text-primary text-sm font-bold hover:bg-primary/5 transition-colors">{t.pricing.cards[2].cta}</button>
         </FadeIn>
       </div>
     </section>
   );
 }
 
-function FAQ() {
-  const faqs = [
-    { q: "Waarom een maandelijks bedrag voor de Foundation?", a: "Dit is voor veilige hosting op premium servers, dagelijkse backups, technische updates en doorlopende support zodat jouw website altijd bereikbaar, veilig en enorm snel is." },
-    { q: "Is het 80s Synthwave thema jullie enige stijl?", a: "Absoluut niet. De 80s Synthwave aesthetic is slechts het thema van ons huidige event. Wij ontwerpen 100% custom, volledig afgestemd op de unieke identiteit van de atleet. Of je nu minimalistisch, modern, robuust of extreem creatief zoekt: we build it." },
-    { q: "Hoe snel is mijn profiel online?", a: "Het Foundation concept duurt gemiddeld 2 tot 4 weken. Profielen met complexe add-ons (zoals dynamische match records of sponsor modules) nemen 4 tot 6 weken in beslag." },
-    { q: "Helpen de integraties echt bij het aantrekken van sponsors?", a: "Ja. Grote merken en (potentiële) sponsors zoeken naar atleten met een exceptionele, professionele online aanwezigheid en meetbare ROI. Met onze premium integraties positioneer je jezelf als een buitengewoon veilige en lucratieve investering." }
-  ];
+function FAQ({ t }: { t: any }) {
+  const faqs = t.faq.items;
 
   return (
     <section className="py-40 bg-surface-container-lowest relative z-10">
       <div className="px-6 md:px-12 max-w-3xl mx-auto">
         <FadeIn className="mb-24 text-center">
-          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Kennisbank</span>
-          <h2 className="font-headline italic text-4xl md:text-6xl text-white">Veelgestelde Vragen.</h2>
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.faq.tag}</span>
+          <h2 className="font-headline italic text-4xl md:text-6xl text-white">{t.faq.title}</h2>
         </FadeIn>
         <div className="space-y-8">
           {faqs.map((faq, i) => (
@@ -651,7 +626,7 @@ function FAQItem({ question, answer }: { question: string, answer: string }) {
   );
 }
 
-function Contact() {
+function Contact({ t }: { t: any }) {
   return (
     <section className="py-40 relative overflow-hidden z-10" id="contact">
       <div className="absolute inset-0 z-0">
@@ -659,9 +634,9 @@ function Contact() {
       </div>
       <div className="relative z-10 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24">
         <FadeIn>
-          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">Connect</span>
-          <h2 className="font-headline italic text-4xl md:text-7xl text-white mb-8">Klaar om je <br/> marktwaarde <br/> te maximaliseren?</h2>
-          <p className="text-on-surface-variant text-lg max-w-md leading-relaxed mb-12">Neem contact op en ontdek direct wat een premium digitaal profiel voor jouw (verdere) professionele carrièrekansen en sponsordeals kan betekenen.</p>
+          <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">{t.contact.tag}</span>
+          <h2 className="font-headline italic text-4xl md:text-7xl text-white mb-8">{t.contact.title1} <br/> {t.contact.title2} <br/> {t.contact.title3}</h2>
+          <p className="text-on-surface-variant text-lg max-w-md leading-relaxed mb-12">{t.contact.desc}</p>
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-white">
               <Mail className="text-secondary w-5 h-5" />
@@ -673,23 +648,23 @@ function Contact() {
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Voornaam</label>
-                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Voornaam" type="text" />
+                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">{t.contact.form.firstName}</label>
+                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder={t.contact.form.firstName} type="text" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Achternaam</label>
-                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Achternaam" type="text" />
+                <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">{t.contact.form.lastName}</label>
+                <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder={t.contact.form.lastName} type="text" />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">E-mailadres</label>
+              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">{t.contact.form.email}</label>
               <input className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="jouw@email.nl" type="email" />
             </div>
             <div className="space-y-2">
-              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">Jouw Doelen / Carrière Informatie</label>
-              <textarea className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder="Vertel ons over jezelf en wat je wilt bereiken..." rows={4}></textarea>
+              <label className="text-xs uppercase font-bold text-on-surface-variant tracking-widest">{t.contact.form.goals}</label>
+              <textarea className="w-full bg-surface-container border-none rounded-xl focus:ring-1 focus:ring-secondary text-white p-4 outline-none text-sm" placeholder={t.contact.form.goalsPlaceholder} rows={4}></textarea>
             </div>
-            <button className="w-full py-4 rounded-full bg-primary text-on-primary-container font-black text-base hover:scale-[1.02] transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.05)]" type="submit">Verstuur Aanvraag</button>
+            <button className="w-full py-4 rounded-full bg-primary text-on-primary-container font-black text-base hover:scale-[1.02] transition-transform shadow-[0_20px_40px_rgba(255,255,255,0.05)]" type="submit">{t.contact.form.cta}</button>
           </form>
         </FadeIn>
       </div>
@@ -697,7 +672,7 @@ function Contact() {
   );
 }
 
-function Footer() {
+function Footer({ t }: { t: any }) {
   return (
     <footer className="relative flex flex-col items-center w-full px-6 md:px-12 overflow-hidden bg-[#0e0e0e] pt-20 pb-12 border-t border-outline-variant/10">
       <div className="w-full max-w-7xl mx-auto mb-20 relative z-10">
@@ -712,7 +687,7 @@ function Footer() {
             <span className="font-headline italic text-2xl font-bold text-white tracking-tighter">LV<span className="text-on-surface-variant font-body not-italic font-normal text-xl tracking-normal">media</span></span>
           </div>
           <p className="text-on-surface-variant text-sm leading-relaxed max-w-xs">
-            Wij creëren premium digitale visitekaartjes voor topsporters. Maximaliseer je marktwaarde en trek moeiteloos grote sponsoren aan.
+            {t.footer.desc}
           </p>
           <div className="flex gap-4 mt-2">
             <a href="#" aria-label="Twitter Profile" className="w-10 h-10 rounded-full border border-outline-variant/50 flex items-center justify-center text-white/70 hover:text-secondary hover:border-secondary transition-colors">
@@ -729,33 +704,31 @@ function Footer() {
 
         {/* Services Column */}
         <div className="flex flex-col gap-6">
-          <h3 className="text-white font-bold text-base">Expertise</h3>
+          <h3 className="text-white font-bold text-base">{t.footer.expertise}</h3>
           <div className="flex flex-col gap-4 text-sm text-on-surface-variant">
-            <a href="#" className="hover:text-secondary transition-colors">Custom Webdesign</a>
-            <a href="#" className="hover:text-secondary transition-colors">Sponsor Integraties</a>
-            <a href="#" className="hover:text-secondary transition-colors">SEO & Dominantie</a>
-            <a href="#" className="hover:text-secondary transition-colors">Interactieve Records</a>
+            {t.footer.expertiseLinks.map((link: string, i: number) => (
+              <a key={i} href="#" className="hover:text-secondary transition-colors">{link}</a>
+            ))}
           </div>
         </div>
 
         {/* Company Column */}
         <div className="flex flex-col gap-6">
-          <h3 className="text-white font-bold text-base">Bedrijf</h3>
+          <h3 className="text-white font-bold text-base">{t.footer.company}</h3>
           <div className="flex flex-col gap-4 text-sm text-on-surface-variant">
-            <a href="#" className="hover:text-secondary transition-colors">Over Ons</a>
-            <a href="#" className="hover:text-secondary transition-colors">Portfolio</a>
-            <a href="#" className="hover:text-secondary transition-colors">Investering</a>
-            <a href="#" className="hover:text-secondary transition-colors">Contact</a>
+            {t.footer.companyLinks.map((link: string, i: number) => (
+              <a key={i} href="#" className="hover:text-secondary transition-colors">{link}</a>
+            ))}
           </div>
         </div>
 
         {/* Legal Column */}
         <div className="flex flex-col gap-6">
-          <h3 className="text-white font-bold text-base">Legal</h3>
+          <h3 className="text-white font-bold text-base">{t.footer.legal}</h3>
           <div className="flex flex-col gap-4 text-sm text-on-surface-variant">
-            <a href="#" className="hover:text-secondary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-secondary transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-secondary transition-colors">Cookie Policy</a>
+            {t.footer.legalLinks.map((link: string, i: number) => (
+              <a key={i} href="#" className="hover:text-secondary transition-colors">{link}</a>
+            ))}
           </div>
         </div>
 
@@ -774,26 +747,38 @@ function Footer() {
 }
 
 export default function App() {
+  const [currentLang, setCurrentLang] = useState<Language>('NL');
+  const t = translations[currentLang];
+
+  useEffect(() => {
+    document.documentElement.lang = currentLang.toLowerCase();
+    document.title = t.seo.title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', t.seo.desc);
+    }
+  }, [currentLang, t]);
+
   return (
     <div className="bg-surface selection:bg-secondary selection:text-surface-container-lowest min-h-screen text-on-surface font-body">
       <Particles />
-      <Navbar />
+      <Navbar currentLang={currentLang} setCurrentLang={setCurrentLang} t={t} />
       {/* Expertise is outside of any overflow:hidden ancestor so position:sticky works correctly */}
       <div className="relative z-10">
-        <Hero />
-        <InfiniteMarquee />
+        <Hero t={t} />
+        <InfiniteMarquee t={t} />
       </div>
-      <Expertise />
+      <Expertise t={t} />
       <main className="relative z-10 overflow-x-hidden">
-        <Work />
-        <Stats />
-        <Team />
-        <Testimonials />
-        <Pricing />
-        <FAQ />
-        <Contact />
+        <Work t={t} />
+        <Stats t={t} />
+        <Team t={t} />
+        <Testimonials t={t} />
+        <Pricing t={t} />
+        <FAQ t={t} />
+        <Contact t={t} />
       </main>
-      <Footer />
+      <Footer t={t} />
     </div>
   );
 }
