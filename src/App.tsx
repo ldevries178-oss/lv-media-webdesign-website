@@ -358,9 +358,9 @@ function Expertise({ t }: { t: any }) {
       id="diensten" 
       ref={targetRef}
       className="bg-surface relative z-10"
-      style={{ height: `${CARD_COUNT * 100}vh` }}
+      style={{ height: `${CARD_COUNT * 70 + 30}vh` }}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden w-full pt-20 md:pt-28">
+      <div className="sticky top-0 h-screen flex flex-col justify-center w-full pt-20 md:pt-28" style={{ overflow: 'clip' }}>
         {/* Section header */}
         <div className="px-6 md:px-12 max-w-7xl mx-auto mb-8 md:mb-12 text-center md:text-left w-full flex-shrink-0">
           <FadeIn>
@@ -374,7 +374,7 @@ function Expertise({ t }: { t: any }) {
         </div>
 
         {/* Horizontal card track */}
-        <div className="flex-1 flex flex-col justify-center overflow-hidden pb-16 md:pb-0">
+        <div className="flex-1 flex flex-col justify-center pb-16 md:pb-0" style={{ overflow: 'clip' }}>
           <div
             ref={trackRef}
             style={{
@@ -382,19 +382,19 @@ function Expertise({ t }: { t: any }) {
               transition: 'none',
               willChange: 'transform',
             }}
-            className="flex items-stretch gap-8 w-max"
+            className="flex items-stretch gap-8 w-max px-[10vw] py-6"
           >
             {t.expertise.cards.map((s: any, i: number) => (
               <div
                 key={i}
                 data-card
-                className={`flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[420px] bg-surface-container-low border p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 ${
+                className={`flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[420px] bg-surface-container-low border p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative transition-all duration-300 ease-out ${
                   activeIndex === i
                     ? 'border-secondary/40 scale-[1.02] shadow-[0_0_60px_rgba(47,248,1,0.08)]'
                     : 'border-outline-variant/20 opacity-40 scale-95'
                 }`}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
+                <div className="absolute top-4 right-4 w-24 h-24 bg-secondary/5 blur-3xl group-hover:bg-secondary/10 transition-colors duration-500 pointer-events-none" />
                 <div className="relative z-10">
                   <div className="text-secondary mb-6 transition-transform duration-500 group-hover:scale-110 origin-left">
                     {icons[i]}
