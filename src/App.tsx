@@ -274,7 +274,12 @@ function InfiniteMarquee({ t }: { t: any }) {
 
 function Expertise({ t }: { t: any }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  
+  const containerRef = useRef<HTMLElement>(null);
+  // Trigger auto-scroll when the section is partially in view
+  const isInView = useInView(containerRef, { amount: 0.3, once: false });
+  const [isInteracting, setIsInteracting] = useState(false);
+  const interactionTimeoutRef = useRef<NodeJS.Timeout>();
+
   const icons = [
     <PenTool className="w-8 h-8" />,
     <TrendingUp className="w-8 h-8" />,
@@ -282,9 +287,70 @@ function Expertise({ t }: { t: any }) {
     <Brain className="w-8 h-8" />
   ];
 
+  const handleInteraction = () => {
+    setIsInteracting(true);
+    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = setTimeout(() => {
+      setIsInteracting(false);
+    }, 4000); // Resume auto-scroll after 4s of inactivity
+  };
+
+  useEffect(() => {
+    if (!isInView || isInteracting) return;
+    
+    const slider = scrollRef.current;
+    if (!slider) return;
+
+    const intervalId = setInterval(() => {
+      // The cards are sandwiched between two 50vw spacer divs, 
+      // so cards are at slice(1, -1)
+      const cards = Array.from(slider.children).slice(1, -1) as HTMLElement[];
+      if (cards.length === 0) return;
+
+      const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+      let closestIndex = 0;
+      let minDistance = Infinity;
+
+      // Find the card closest to the center
+      cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const distance = Math.abs(cardCenter - sliderCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      const numCards = cards.length;
+      
+      if (closestIndex >= numCards - 1) {
+        // If we are at the last card, scroll back to the *first* card
+        const firstCard = cards[0];
+        slider.scrollTo({
+          left: firstCard.offsetLeft - slider.clientWidth / 2 + firstCard.clientWidth / 2,
+          behavior: 'smooth'
+        });
+      } else {
+        // Scroll to the next card
+        const nextCard = cards[closestIndex + 1];
+        slider.scrollTo({
+          left: nextCard.offsetLeft - slider.clientWidth / 2 + nextCard.clientWidth / 2,
+          behavior: 'smooth'
+        });
+      }
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [isInView, isInteracting]);
+
+
   return (
-    <section id="diensten" className="py-24 md:py-32 bg-surface relative z-10 overflow-hidden">
-      <div className="px-6 md:px-12 max-w-7xl mx-auto mb-16">
+    <section 
+      id="diensten" 
+      ref={containerRef}
+      className="py-24 md:py-32 bg-surface relative z-10 overflow-hidden"
+    >
+      <div className="px-6 md:px-12 max-w-7xl mx-auto mb-16 text-center md:text-left">
         <FadeIn>
           <span className="text-secondary text-sm font-bold tracking-widest uppercase mb-4 block">
             {t.expertise.tag}
@@ -298,16 +364,22 @@ function Expertise({ t }: { t: any }) {
       {/* Horizontal Scroll Snap Carousel */}
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 px-6 md:px-12 pb-12 w-full touch-pan-x"
-        style={{ 
-          scrollPaddingLeft: '24px',
-          scrollPaddingRight: '50vw'
+        onScroll={handleInteraction}
+        onTouchStart={handleInteraction}
+        onMouseEnter={handleInteraction}
+        onMouseLeave={() => {
+          if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+          interactionTimeoutRef.current = setTimeout(() => setIsInteracting(false), 2000);
         }}
+        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-8 pb-12 w-full touch-pan-x items-center"
       >
+        {/* Start Padding Spacer -> allows the first card to be perfectly centered */}
+        <div className="flex-shrink-0 w-[50vw] md:w-[25vw] pointer-events-none" />
+
         {t.expertise.cards.map((s: any, i: number) => (
           <div
             key={i}
-            className="flex-shrink-0 w-[85vw] md:w-[400px] snap-center md:snap-align-none bg-surface-container-low border border-outline-variant/20 p-8 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 hover:border-secondary/30"
+            className="flex-shrink-0 w-[85vw] md:w-[60vw] max-w-[800px] min-h-[450px] snap-center bg-surface-container-low border border-outline-variant/20 p-8 md:p-12 rounded-3xl flex flex-col justify-between group shadow-2xl backdrop-blur-xl relative overflow-hidden transition-all duration-500 hover:border-secondary/30"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/10 transition-colors duration-500" />
             <div className="relative z-10">
@@ -328,8 +400,9 @@ function Expertise({ t }: { t: any }) {
             </ul>
           </div>
         ))}
-        {/* Extra padding to ensure the last card can be centered/fully visible */}
-        <div className="flex-shrink-0 w-[50vw] pointer-events-none" />
+        
+        {/* End Padding Spacer -> allows the last card to be perfectly centered */}
+        <div className="flex-shrink-0 w-[50vw] md:w-[25vw] pointer-events-none" />
       </div>
 
       {/* Scroll controls/hint */}
@@ -339,18 +412,26 @@ function Expertise({ t }: { t: any }) {
           <span>{t.expertise.scrollHint}</span>
           <ArrowRight className="w-3 h-3 animate-pulse" />
         </div>
-        <div className="hidden md:flex gap-2">
+        <div className="hidden md:flex gap-4">
           <button 
-            onClick={() => scrollRef.current?.scrollBy({ left: -400, behavior: 'smooth' })}
-            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:text-secondary transition-all"
+            onClick={() => {
+              handleInteraction();
+              const slider = scrollRef.current;
+              if (slider) slider.scrollBy({ left: -600, behavior: 'smooth' });
+            }}
+            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:bg-secondary/10 hover:text-secondary transition-all shadow-[0_0_15px_rgba(0,0,0,0.2)]"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
           <button 
-            onClick={() => scrollRef.current?.scrollBy({ left: 400, behavior: 'smooth' })}
-            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:text-secondary transition-all"
+            onClick={() => {
+              handleInteraction();
+              const slider = scrollRef.current;
+              if (slider) slider.scrollBy({ left: 600, behavior: 'smooth' });
+            }}
+            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:border-secondary hover:bg-secondary/10 hover:text-secondary transition-all shadow-[0_0_15px_rgba(0,0,0,0.2)]"
           >
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" />
           </button>
         </div>
       </div>
