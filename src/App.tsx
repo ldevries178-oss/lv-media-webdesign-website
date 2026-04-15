@@ -2,6 +2,10 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'mot
 import { Menu, Globe, ChevronDown, ArrowLeft, ArrowRight, PenTool, Code, Brain, TrendingUp, Check, Plus, Mail, MapPin, Minus, Twitter, Linkedin, Instagram, Star, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { translations, Language } from './translations';
+import { HeroBackground } from "./components/ui/glass-video-hero";
+
+console.log("App.tsx script loaded");
+
 
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
   return (
@@ -60,7 +64,7 @@ function Particles() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * 0.5})`;
+        ctx.fillStyle = `rgba(47, 248, 1, ${p.opacity * 0.4})`;
         ctx.fill();
       });
       animationFrameId = window.requestAnimationFrame(render);
@@ -183,37 +187,8 @@ function Navbar({ currentLang, setCurrentLang, t }: { currentLang: Language, set
 function Hero({ t }: { t: any }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Top Left Glow */}
-        <motion.div 
-          animate={{ 
-            x: [0, 150, -50, 0], 
-            y: [0, 100, -50, 0], 
-            opacity: [0.5, 0.8, 0.5] 
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -left-[10%] w-[40vw] h-[40vw] min-w-[500px] bg-secondary/20 rounded-full blur-[150px]" 
-        />
-        {/* Center Right Glow */}
-        <motion.div 
-          animate={{ 
-            x: [0, -200, 100, 0], 
-            y: [0, 150, -100, 0], 
-            opacity: [0.4, 0.7, 0.4] 
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[10%] -right-[10%] w-[45vw] h-[45vw] min-w-[600px] bg-secondary/20 rounded-full blur-[150px]" 
-        />
-        {/* Bottom Center Glow */}
-        <motion.div 
-          animate={{ 
-            x: [0, 150, -150, 0], 
-            y: [0, -150, 50, 0], 
-            opacity: [0.4, 0.6, 0.4] 
-          }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] left-[20%] w-[50vw] h-[50vw] min-w-[600px] bg-secondary/20 rounded-full blur-[150px]" 
-        />
+      <div className="absolute inset-0 z-0">
+        <HeroBackground />
       </div>
       <div className="relative z-10 max-w-5xl px-6 text-center">
         <motion.span 
@@ -847,6 +822,10 @@ function Footer({ t }: { t: any }) {
 export default function App() {
   const [currentLang, setCurrentLang] = useState<Language>('NL');
   const t = translations[currentLang];
+
+  useEffect(() => {
+    console.log("App component mounted");
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = currentLang.toLowerCase();
